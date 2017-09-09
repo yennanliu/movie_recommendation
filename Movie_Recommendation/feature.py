@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd 
 
 
+
 def init_data():
     #Reading users file:
     u_cols = ['user_id', 'age', 'sex', 'occupation', 'zip_code']
@@ -27,12 +28,26 @@ def init_data():
     ratings.to_csv('ratings.csv')
     items.to_csv('items.csv')
     
-def load_csv():
+def load_train_test_data():
+    r_cols = ['user_id', 'movie_id', 'rating', 'unix_timestamp']
+    ratings_base = pd.read_csv('data/ua.base', sep='\t', names=r_cols, encoding='latin-1')
+    ratings_test = pd.read_csv('data/ua.test', sep='\t', names=r_cols, encoding='latin-1')
+    ratings_base.to_csv('ratings_base.csv')
+    ratings_test.to_csv('ratings_test.csv')
+
+    
+def load_data():
     users = pd.read_csv('users.csv')
     ratings =  pd.read_csv('ratings.csv')
     items =  pd.read_csv('items.csv')
-    return users, ratings,items 
+    ratings_base = pd.read_csv('ratings_base.csv')
+    ratings_test = pd.read_csv('ratings_test.csv')
+    return users, ratings, items, ratings_base, ratings_test
     
+
+
+
+
 
 
 
