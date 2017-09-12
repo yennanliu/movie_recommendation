@@ -2,8 +2,8 @@ import csv
 import math
 import sys
 import numpy as np
-import pandas as pd 
-
+import pandas as pd
+import datetime
 
 
 def init_data():
@@ -44,6 +44,11 @@ def load_data():
     ratings_test = pd.read_csv('ratings_test.csv')
     return users, ratings, items, ratings_base, ratings_test
     
+
+def unix2datetime(x):
+    temp = datetime.datetime.fromtimestamp(x).strftime('%Y-%m-%d')
+    return temp
+
 
 
 
