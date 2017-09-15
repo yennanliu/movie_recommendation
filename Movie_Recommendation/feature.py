@@ -24,24 +24,24 @@ def init_data():
     items = pd.read_csv('data/u.item', sep='|', names=i_cols,
      encoding='latin-1')
     # save to csv 
-    users.to_csv('users.csv')
-    ratings.to_csv('ratings.csv')
-    items.to_csv('items.csv')
+    users.to_csv('train_data/users.csv')
+    ratings.to_csv('train_data/ratings.csv')
+    items.to_csv('train_data/items.csv')
     
 def load_train_test_data():
     r_cols = ['user_id', 'movie_id', 'rating', 'unix_timestamp']
     ratings_base = pd.read_csv('data/ua.base', sep='\t', names=r_cols, encoding='latin-1')
     ratings_test = pd.read_csv('data/ua.test', sep='\t', names=r_cols, encoding='latin-1')
-    ratings_base.to_csv('ratings_base.csv')
-    ratings_test.to_csv('ratings_test.csv')
+    ratings_base.to_csv('train_data/ratings_base.csv')
+    ratings_test.to_csv('train_data/ratings_test.csv')
 
     
 def load_data():
-    users = pd.read_csv('users.csv')
-    ratings =  pd.read_csv('ratings.csv')
-    items =  pd.read_csv('items.csv')
-    ratings_base = pd.read_csv('ratings_base.csv')
-    ratings_test = pd.read_csv('ratings_test.csv')
+    users = pd.read_csv('train_data/users.csv')
+    ratings =  pd.read_csv('train_data/ratings.csv')
+    items =  pd.read_csv('train_data/items.csv')
+    ratings_base = pd.read_csv('train_data/ratings_base.csv')
+    ratings_test = pd.read_csv('train_data/ratings_test.csv')
     return users, ratings, items, ratings_base, ratings_test
     
 
