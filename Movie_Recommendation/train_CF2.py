@@ -5,6 +5,7 @@ import pandas as pd
 
 from feature import *
 
+#===============================================
 # help function 
 
 
@@ -25,6 +26,10 @@ def print_recommendations(W, Q, Q_hat, movie_titles):
         print('\n User {} recommended movie is {} - with predicted rating: {}'.format(
                     jj + 1, movie_titles[movie_id], Q_hat[jj, movie_id]))
         print('\n' + 100 *  '-' + '\n')
+
+#===============================================
+
+
 
 
 def prepare():

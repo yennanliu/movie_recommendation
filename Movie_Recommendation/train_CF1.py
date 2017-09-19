@@ -62,9 +62,6 @@ def predict_topk(ratings, similarity, kind='user', k=40):
     return pred
 
 
-#===============================================
-
-
 
 def get_mse(pred, actual):
     pred = pred[actual.nonzero()].flatten()
