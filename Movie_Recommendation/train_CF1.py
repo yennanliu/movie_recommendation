@@ -115,9 +115,31 @@ def main(idx):
 	print ('----------------------------')
 	return movies 
 
+
+def user_similar(userid_range):
+	users, ratings, items, ratings_base, ratings_test = load_data()
+	ratings = ratings.drop('Unnamed: 0', 1)
+	ratings.columns = ['user_id', 'item_id', 'rating', 'timestamp']
+	n_users = ratings.user_id.unique().shape[0]
+	n_items = ratings.item_id.unique().shape[0]
+	ratings_ = np.zeros((n_users, n_items))
+	for row in ratings.itertuples(): 
+	    ratings_[row[1]-1, row[2]-1] = row[3]
+	train, test = train_test_split(ratings_)
+	user_similarity = fast_similarity(train, kind='user')
+	item_similarity = fast_similarity(train, kind='item')
+	df_user_similarity = pd.DataFrame(user_similarity)
+	for userid in range(userid_range):
+		user_similar = pd.DataFrame(df_user_similarity.iloc[userid].sort_values(ascending=False).head(5)).reset_index()
+		user_similar.columns = ['userid','similarity']
+		print (user_similar)
+		print ('----------------------------')
+
+
 if __name__ == '__main__':
-	for k in range(5):
-		main(k)
+	#for k in range(5):
+	#	main(k)
+	user_similar(50)
 
 
 
