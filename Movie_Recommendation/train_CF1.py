@@ -35,37 +35,12 @@ def fast_similarity(ratings, kind='user', epsilon=1e-9):
     norms = np.array([np.sqrt(np.diagonal(sim))])
     return (sim / norms / norms.T)
 
-
-def predict_slow_simple(ratings, similarity, kind='user'):
-    pred = np.zeros(ratings.shape)
-    if kind == 'user':
-        for i in range(ratings.shape[0]):
-            for j in range(ratings.shape[1]):
-                pred[i, j] = similarity[i, :].dot(ratings[:, j])\
-                             /np.sum(np.abs(similarity[i, :]))
-        return pred
-    elif kind == 'item':
-        for i in range(ratings.shape[0]):
-            for j in range(ratings.shape[1]):
-                pred[i, j] = similarity[j, :].dot(ratings[i, :].T)\
-                             /np.sum(np.abs(similarity[j, :]))
-
-        return pred
-
-    
     
 def predict_fast_simple(ratings, similarity, kind='user'):
     if kind == 'user':
         return similarity.dot(ratings) / np.array([np.abs(similarity).sum(axis=1)]).T
     elif kind == 'item':
         return ratings.dot(similarity) / np.array([np.abs(similarity).sum(axis=1)])
-
-
-def get_mse(pred, actual):
-    # Ignore nonzero terms.
-    pred = pred[actual.nonzero()].flatten()
-    actual = actual[actual.nonzero()].flatten()
-    return mean_squared_error(pred, actual)
 
 
 
@@ -106,6 +81,7 @@ def top_k_movies(similarity, mapper, movie_idx, k=10):
 
 # load data 
 def main(idx):
+	# given movie name, predict other simiar movie names 
 	users, ratings, items, ratings_base, ratings_test = load_data()
 	ratings = ratings.drop('Unnamed: 0', 1)
 	ratings.columns = ['user_id', 'item_id', 'rating', 'timestamp']
@@ -133,9 +109,9 @@ def main(idx):
 	        info = line.split('|')
 	        idx_to_movie_[int(info[0])-1] = info[1]
 	movies = top_k_movies(item_similarity, idx_to_movie_, idx)
-	print ('movie name :', movies[0])
+	print ('* Movie name :', movies[0])
 	print ('')
-	print ('similar movie name :', movies[1:])
+	print ('* Similar movie name :', movies[1:])
 	print ('----------------------------')
 	return movies 
 
