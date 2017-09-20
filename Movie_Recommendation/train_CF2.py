@@ -46,10 +46,12 @@ def prepare():
 	W[W == False] = 0
 	W = W.astype(np.float64, copy=False)
 	# set up parameters 
+	#=========
 	lambda_ = 0.1
 	n_factors = 100
 	m, n = Q.shape
 	n_iterations = 20
+	#=========
 	X = 5 * np.random.rand(m, n_factors) 
 	Y = 5 * np.random.rand(n_factors, n)
 	errors = []

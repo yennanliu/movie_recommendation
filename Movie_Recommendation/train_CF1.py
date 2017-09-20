@@ -134,9 +134,9 @@ def user_similar(userid_range):
 
 
 if __name__ == '__main__':
-	#for k in range(5):
-	#	main(k)
-	user_similar(50)
+	for k in range(5):
+		main(k)
+	#user_similar(50)
 
 
 
