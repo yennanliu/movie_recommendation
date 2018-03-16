@@ -1,12 +1,8 @@
 # movie_recommendation
-//dev 
 
-
+	- `Building a light movie push system based on user rating log & item data`
 
 ### Intro
-
-- Idea 
-	- `Building a light movie push system based on user rating log & item data`
 
 
 - Collaborative filtering (CF)
@@ -45,13 +41,20 @@ yennanliu@yennanliude-MacBook-Pro:~/movie_recommendation$ tree --si
 ```
 
 ### Ref 
-- https://github.com/narenkmanoharan/Movie-Recommender-System
-- https://github.com/srajangarg/movie-recommendation-algorithms
-- https://www.kaggle.com/rounakbanik/the-movies-dataset/kernels
-- https://blog.statsbot.co/recommendation-system-algorithms-ba67f39ac9a3
+
+- Movie recommendation 
+	- https://github.com/narenkmanoharan/Movie-Recommender-System
+	- https://github.com/srajangarg/movie-recommendation-algorithms
+	- https://www.kaggle.com/rounakbanik/the-movies-dataset/kernels
+	- https://blog.statsbot.co/recommendation-system-algorithms-ba67f39ac9a3
+	- http://ampcamp.berkeley.edu/5/exercises/movie-recommendation-with-mllib.html
+	- http://dataaspirant.com/2015/05/25/collaborative-filtering-recommendation-engine-implementation-in-python/
+	- https://www.datacamp.com/community/tutorials/recommender-systems-python
+	- https://beckernick.github.io/matrix-factorization-recommender/
 
 
-
+- Song recommendation
+	- https://towardsdatascience.com/how-to-build-a-simple-song-recommender-296fcbc8c85
 
 
 
