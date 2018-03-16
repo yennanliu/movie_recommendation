@@ -11,7 +11,8 @@
 Process : 
 
 1) download spark bin-hadoop main file  (make sure you have Java 8 or newer version) 
-2) unzip its and move to the ops location 
+2) unzip its and move to the ops location (default as /Users/yennanliu/spark )
+3) copy all files under /Users/yennanliu/spark-2.3.0-bin-hadoop2.7  to /Users/yennanliu/spark
 3) install python spark API library : pyspark
 4) declare env parameter
 5) run the spark via command : pysark 
@@ -27,12 +28,12 @@ source activate pyspark_
 
 # install pyspark 
 # download here  : http://spark.apache.org/downloads.html
-cd downloads
+cd Downloads
 wget --quiet http://apache.mirror.anlx.net/spark/spark-2.3.0/spark-2.3.0-bin-hadoop2.7.tgz
 tar -xzf spark-2.3.0-bin-hadoop2.7.tgz
-mv spark-2.3.0-bin-hadoop2.7 /opt/spark-2.3.0
+mv spark-2.3.0-bin-hadoop2.7 /Users/yennanliu/spark-2.3.0-bin-hadoop2.7
 
-cd 
+cd ~
 mkdir spark
 ls -s /Users/yennanliu/spark-2.3.0-bin-hadoop2.7 /Users/yennanliu/spark
 
