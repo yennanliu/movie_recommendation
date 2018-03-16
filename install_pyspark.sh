@@ -48,6 +48,7 @@ pip install pyspark
 
 # declare env parameter
 #export SPARK_HOME=/Users/yennanliu/spark
+#export SPARK_HOME=/Users/yennanliu/spark
 export SPARK_HOME=$my_route/spark
 export PATH=$SPARK_HOME/bin:$PATH
 
