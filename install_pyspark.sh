@@ -34,8 +34,8 @@ tar -xzf spark-2.3.0-bin-hadoop2.7.tgz
 mv spark-2.3.0-bin-hadoop2.7 /Users/yennanliu/spark-2.3.0-bin-hadoop2.7
 
 cd ~
-mkdir spark
-ls -s /Users/yennanliu/spark-2.3.0-bin-hadoop2.7 /Users/yennanliu/spark
+#mkdir spark
+cp -R /Users/yennanliu/spark-2.3.0-bin-hadoop2.7 /Users/yennanliu/spark
 
 # install python pyspark library 
 pip install pyspark
