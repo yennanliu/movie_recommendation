@@ -32,6 +32,7 @@ source activate pyspark_
 
 # install pyspark 
 # download here  : http://spark.apache.org/downloads.html
+cd ~
 wget --quiet http://apache.mirror.anlx.net/spark/spark-2.3.0/spark-2.3.0-bin-hadoop2.7.tgz
 tar -xzf $my_route/Downloads/spark-2.3.0-bin-hadoop2.7.tgz
 #mv spark-2.3.0-bin-hadoop2.7 /Users/yennanliu/spark-2.3.0-bin-hadoop2.7
