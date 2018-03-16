@@ -40,6 +40,19 @@ yennanliu@yennanliude-MacBook-Pro:~/movie_recommendation$ tree --si
 3 directories, 38 files
 ```
 
+
+### Quick start 
+
+
+```bash 
+# get the repo 
+$ git clone https://github.com/yennanliu/movie_recommendation.git
+# back to the root directory 
+$ cd ~
+# install pyspark
+$ bash /Users/<your_user_name>/movie_recommendation/install_pyspark.sh
+
+```
 ### Ref 
 
 - Movie recommendation 
