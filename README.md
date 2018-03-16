@@ -43,11 +43,13 @@ yennanliu@yennanliude-MacBook-Pro:~/movie_recommendation$ tree --si
 ### Ref 
 
 - Movie recommendation 
+	- https://github.com/jadianes/spark-movie-lens
+	- https://github.com/nchah/movielens-recommender
 	- https://github.com/narenkmanoharan/Movie-Recommender-System
+	- http://ampcamp.berkeley.edu/5/exercises/movie-recommendation-with-mllib.html
 	- https://github.com/srajangarg/movie-recommendation-algorithms
 	- https://www.kaggle.com/rounakbanik/the-movies-dataset/kernels
 	- https://blog.statsbot.co/recommendation-system-algorithms-ba67f39ac9a3
-	- http://ampcamp.berkeley.edu/5/exercises/movie-recommendation-with-mllib.html
 	- http://dataaspirant.com/2015/05/25/collaborative-filtering-recommendation-engine-implementation-in-python/
 	- https://www.datacamp.com/community/tutorials/recommender-systems-python
 	- https://beckernick.github.io/matrix-factorization-recommender/
