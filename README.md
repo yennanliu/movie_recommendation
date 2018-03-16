@@ -4,8 +4,23 @@
 
 
 ### Intro
-//dev 
 
+- Idea 
+	- `Building a light movie push system based on user rating log & item data`
+
+
+- Collaborative filtering (CF)
+	- ubased_predict : User Based CF
+	- mbased_predict : Item Based CF
+	- similarityall_predict : All User Based CF with much smaller time complexity
+
+
+- KNN 
+	- dev 
+
+
+- DL 
+	- dev 
 
 
 ### File structure 
@@ -30,7 +45,16 @@ yennanliu@yennanliude-MacBook-Pro:~/movie_recommendation/Movie_Recommendation$ t
 ```
 
 ### Ref 
-//dev 
+- https://github.com/narenkmanoharan/Movie-Recommender-System
+- https://github.com/srajangarg/movie-recommendation-algorithms
+- https://www.kaggle.com/rounakbanik/the-movies-dataset/kernels
+- https://blog.statsbot.co/recommendation-system-algorithms-ba67f39ac9a3
+
+
+
+
+
+
 
 
 
