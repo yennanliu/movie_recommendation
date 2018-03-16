@@ -25,7 +25,7 @@
 
 ### File structure 
 ```
-yennanliu@yennanliude-MacBook-Pro:~/movie_recommendation/Movie_Recommendation$ tree --si
+yennanliu@yennanliude-MacBook-Pro:~/movie_recommendation$ tree --si
 .
 ├── [187k]  MovieLens_EDA.ipynb
 ├── [1.9k]  feature.py
