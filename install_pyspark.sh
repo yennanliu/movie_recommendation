@@ -54,8 +54,7 @@ export PATH=$SPARK_HOME/bin:$PATH
 
 
 # install jupyter notebook 
-
-
+pip install jupyter
 
 
 
