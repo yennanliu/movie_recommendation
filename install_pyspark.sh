@@ -17,6 +17,10 @@ Process :
 5) declare env parameter
 6) run the spark via command : pysark 
 
+Ref :
+JAVA JDK can be downloaded here 
+http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+
 #-------------------
 
 COMMENT1
