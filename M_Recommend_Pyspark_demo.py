@@ -1,5 +1,10 @@
 # python 3 
 
+# ref 
+# https://github.com/yennanliu/movie_recommendation/blob/master/M_Recommend_Pyspark_demo.ipynb
+# https://github.com/jadianes/spark-movie-lens/blob/master/notebooks/building-recommender.ipynb
+
+
 
 # import library 
 from pyspark import SparkContext
