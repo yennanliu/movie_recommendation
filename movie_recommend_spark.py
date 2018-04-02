@@ -41,28 +41,40 @@ def get_data_preview():
 
 
 
-def get_data():
-	# rating small dataset 
-	# userid, movieid, rating, timestamp 
-	datasets_path = '/Users/yennanliu/movie_recommendation/datasets/'
-	small_ratings_file = os.path.join(datasets_path, 'ml-latest-small', 'ratings.csv')
-	small_ratings_raw_data = sc.textFile(small_ratings_file)
-	# get heater 
-	small_ratings_raw_data_header = small_ratings_raw_data.take(1)[0]
-	# filter out header 
-	# only get 1st, 2rd, and 3rd columns
-	small_ratings_data = small_ratings_raw_data.filter(lambda line: line!=small_ratings_raw_data_header)\
-	.map(lambda line: line.split(",")).map(lambda tokens: (tokens[0],tokens[1],tokens[2])).cache()
-	# movie dataset 
-	# movieid, name 
-	small_movies_file = os.path.join(datasets_path, 'ml-latest-small', 'movies.csv')
-	small_movies_raw_data = sc.textFile(small_movies_file)
-	small_movies_raw_data_header = small_movies_raw_data.take(1)[0]
-	# filter out header 
-	small_movies_data = small_movies_raw_data.filter(lambda line: line!=small_movies_raw_data_header)\
-	.map(lambda line: line.split(",")).map(lambda tokens: (tokens[0],tokens[1])).cache()
+def get_data(full_dataset=False):
+	if full_dataset==False:
+		# rating small dataset 
+		# userid, movieid, rating, timestamp 
+		datasets_path = '/Users/yennanliu/movie_recommendation/datasets/'
+		small_ratings_file = os.path.join(datasets_path, 'ml-latest-small', 'ratings.csv')
+		small_ratings_raw_data = sc.textFile(small_ratings_file)
+		# get heater 
+		small_ratings_raw_data_header = small_ratings_raw_data.take(1)[0]
+		# filter out header 
+		# only get 1st, 2rd, and 3rd columns
+		small_ratings_data = small_ratings_raw_data.filter(lambda line: line!=small_ratings_raw_data_header)\
+		.map(lambda line: line.split(",")).map(lambda tokens: (tokens[0],tokens[1],tokens[2])).cache()
+		# movie dataset 
+		# movieid, name 
+		small_movies_file = os.path.join(datasets_path, 'ml-latest-small', 'movies.csv')
+		small_movies_raw_data = sc.textFile(small_movies_file)
+		small_movies_raw_data_header = small_movies_raw_data.take(1)[0]
+		# filter out header 
+		small_movies_data = small_movies_raw_data.filter(lambda line: line!=small_movies_raw_data_header)\
+		.map(lambda line: line.split(",")).map(lambda tokens: (tokens[0],tokens[1])).cache()
+		return small_ratings_data, small_movies_data
 
-	return small_ratings_data, small_movies_data
+	elif full_dataset==True:
+		# Load the complete dataset file
+		complete_ratings_file = os.path.join(datasets_path, 'ml-latest', 'ratings.csv')
+		complete_ratings_raw_data = sc.textFile(complete_ratings_file)
+		complete_ratings_raw_data_header = complete_ratings_raw_data.take(1)[0]
+
+		# Parse
+		complete_ratings_data = complete_ratings_raw_data.filter(lambda line: line!=complete_ratings_raw_data_header)\
+		    .map(lambda line: line.split(",")).map(lambda tokens: (int(tokens[0]),int(tokens[1]),float(tokens[2]))).cache()
+
+ 
 
 
 def train_test_split(dataset):
