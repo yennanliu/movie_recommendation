@@ -76,36 +76,27 @@ def train_test_split(dataset):
 
 
 def ALS_model(training_RDD,validation_RDD,validation_for_predict_RDD):
-	# super parameters
-	"""
-	seed = 30
-	iterations = 10
-	regularization_parameter = 0.1
-	ranks = [4, 8, 12]
-	errors = [0, 0, 0]
-	err = 0
-	tolerance = 0.02
-	# minor setting 
-	min_error = float('inf')
-	best_rank = -1
-	best_iteration = -1
-	"""
 	# ------------- 
+	# super parameters
+	err=0
+	min_error = float('inf')
 	parameter = {}
 	parameter['seed'] = 30
 	parameter['iterations'] = 10
 	parameter['regularization_parameter'] = 0.1
 	parameter['ranks'] = [4, 8, 12]
 	parameter['errors'] = [0, 0, 0]
-	parameter['err'] = 0 
 	parameter['tolerance'] = 0.02
 	# -------------
+	# train the model over super parameters sets 
 	for rank in parameter['ranks']:
 		model = ALS.train(training_RDD, rank, seed=parameter['seed'], iterations=parameter['iterations'],lambda_=parameter['regularization_parameter'])
 		predictions = model.predictAll(validation_for_predict_RDD).map(lambda r: ((r[0], r[1]), r[2]))
+		# join real rating and predicted rating 
 		rates_and_preds = validation_RDD.map(lambda r: ((int(r[0]), int(r[1])), float(r[2]))).join(predictions)
+		# predicted rating error (mean square error)
 		error = math.sqrt(rates_and_preds.map(lambda r: (r[1][0] - r[1][1])**2).mean())
-		errors[err] = error
+		parameter['errors'][err] = error
 		err += 1
 		# --- fix here for python 3 --- #
 		print ('For rank %s the RMSE is %s' % (rank, error))
@@ -115,7 +106,7 @@ def ALS_model(training_RDD,validation_RDD,validation_for_predict_RDD):
 	# --- fix here for python 3 --- #
 	print ('The best model was trained with rank %s' % best_rank)
 
-	return model, predictions, rates_and_preds, errors, min_error,best_rank, parameter
+	return model, predictions, rates_and_preds, min_error,best_rank, parameter
 
 
 # ----------------------
@@ -130,7 +121,7 @@ if __name__ == '__main__':
 	training_RDD, validation_RDD, test_RDD, validation_for_predict_RDD, test_for_predict_RDD = train_test_split(small_ratings_data)
 	# ------------ Model Training  ------------ #
 	# train ALS model 
-	model, predictions, rates_and_preds, errors, min_error,best_rank, parameter = ALS_model(training_RDD,validation_RDD,validation_for_predict_RDD)
+	model, predictions, rates_and_preds, min_error,best_rank, parameter = ALS_model(training_RDD,validation_RDD,validation_for_predict_RDD)
 	# predict with trained ALS model 
 
 
