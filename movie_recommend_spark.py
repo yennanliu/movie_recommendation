@@ -109,6 +109,16 @@ def ALS_model(training_RDD,validation_RDD,validation_for_predict_RDD):
 	return model, predictions, rates_and_preds, min_error,best_rank, parameter
 
 
+def ALS_model_predict(model,test_for_predict_RDD,test_RDD):
+	#model = ALS.train(training_RDD, best_rank, seed=parameter['seed'], iterations=parameter['iterations'],lambda_=parameter['regularization_parameter'])
+	predictions = model.predictAll(test_for_predict_RDD).map(lambda r: ((r[0], r[1]), r[2]))
+	rates_and_preds = test_RDD.map(lambda r: ((int(r[0]), int(r[1])), float(r[2]))).join(predictions)
+	error = math.sqrt(rates_and_preds.map(lambda r: (r[1][0] - r[1][1])**2).mean())
+	print ('For testing data the RMSE is %s' % (error))
+
+
+
+
 # ----------------------
 
 
@@ -123,6 +133,10 @@ if __name__ == '__main__':
 	# train ALS model 
 	model, predictions, rates_and_preds, min_error,best_rank, parameter = ALS_model(training_RDD,validation_RDD,validation_for_predict_RDD)
 	# predict with trained ALS model 
+	print ('************')
+	ALS_model_predict(model,test_for_predict_RDD,test_RDD)
+	print ('************')
+
 
 
 
