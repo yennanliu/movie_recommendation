@@ -34,9 +34,9 @@ yennanliu@yennanliude-MacBook-Pro:~/movie_recommendation$ tree --si
 │   ├── [ 929]  train_Graphlab.py              : train via "Graphlab" library
 │   ├── [ 224]  train_data                     : dataset for train_CF2.py   
 │   └── [2.8k]  train_lightFM.py               : train via "lightFM" library
-├── [ 160]  datasets                           : dataset for movie_recommend_spark.p and M_Recommend_Pyspark_demo.py
+├── [ 160]  datasets                           : dataset for movie_recommend_spark.py and M_Recommend_Pyspark_demo.py
 ├── [1.6k]  install_pyspark.sh                 : help script install local pyspark 
-├── [ 11k]  movie_recommend_spark.ipynb        : nb step by step demo for movie_recommend_spark.p
+├── [ 11k]  movie_recommend_spark.ipynb        : nb step by step demo for movie_recommend_spark.py
 ├── [4.1k]  movie_recommend_spark.py           : movie recommend via pyspark ML library  
 └── [  96]  notebook
     └── [187k]  MovieLens_EDA.ipynb            : EDA nb 
@@ -60,6 +60,12 @@ $ export SPARK_HOME=/Users/<your_user_name>/spark
 $ export PATH=$SPARK_HOME/bin:$PATH
 # run the pyspark script 
 $ spark-submit  movie_recommend_spark.py 
+
+# output 
+# For rank 4 the RMSE is 0.9468754980616227
+# For rank 8 the RMSE is 0.9506633976151833
+# For rank 12 the RMSE is 0.9546822442894083
+# The best model was trained with rank 4
 ```
 ### Ref 
 
