@@ -95,6 +95,14 @@ def train_test_split(dataset):
 	test_for_predict_RDD = test_RDD.map(lambda x: (x[0], x[1]))
 	return training_RDD, validation_RDD, test_RDD, validation_for_predict_RDD, test_for_predict_RDD
 
+
+
+def get_counts_and_averages(ID_and_ratings_tuple):
+    nratings = len(ID_and_ratings_tuple[1])
+    return ID_and_ratings_tuple[0], (nratings, float(sum(x for x in ID_and_ratings_tuple[1]))/nratings)
+
+
+
 # ML 
 
 
