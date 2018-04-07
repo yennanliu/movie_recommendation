@@ -53,16 +53,18 @@ def get_data(full_dataset=False):
 		small_ratings_raw_data_header = small_ratings_raw_data.take(1)[0]
 		# filter out header 
 		# only get 1st, 2rd, and 3rd columns
+		# fix dtype to float  
 		small_ratings_data = small_ratings_raw_data.filter(lambda line: line!=small_ratings_raw_data_header)\
-		.map(lambda line: line.split(",")).map(lambda tokens: (tokens[0],tokens[1],tokens[2])).cache()
+		.map(lambda line: line.split(",")).map(lambda tokens: (float(tokens[0]),float(tokens[1]),float(tokens[2]))).cache()
 		#------ movie dataset ------#
 		# movieid, name 
 		small_movies_file = os.path.join(datasets_path, 'ml-latest-small', 'movies.csv')
 		small_movies_raw_data = sc.textFile(small_movies_file)
 		small_movies_raw_data_header = small_movies_raw_data.take(1)[0]
 		# filter out header 
-		small_movies_data = small_movies_raw_data.filter(lambda line: line!=small_movies_raw_data_header)\
-		.map(lambda line: line.split(",")).map(lambda tokens: (tokens[0],tokens[1])).cache()
+		# fix dtype to float  
+		small_movies_data = small_ratings_raw_data.filter(lambda line: line!=small_ratings_raw_data_header)\
+		.map(lambda line: line.split(",")).map(lambda tokens: (float(tokens[0]),float(tokens[1]),float(tokens[2]))).cache()
 		return small_ratings_data, small_movies_data
 
 	elif full_dataset==True:
