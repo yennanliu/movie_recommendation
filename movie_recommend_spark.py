@@ -180,6 +180,15 @@ def ALS_model_predict(model,test_for_predict_RDD,test_RDD):
 
 
 if __name__ == '__main__':
+	"""
+	PROCESS : 
+	1) train with original data  and get the best parameters 
+	2) get avg/count feature
+	3) get "new user input" data (new user comment )
+	4) merge original data  with 2), 3) new data  as modifed data 
+	5) re-train modifed data with  best parameters 
+
+	"""
 	# dataset preview 
 	get_data_preview()
 	# get data 
@@ -199,12 +208,17 @@ if __name__ == '__main__':
 	small_movie_ID_avg_ratings_RDD = small_movie_ID_with_ratings_RDD.map(get_counts_and_averages)
 	small_movie_rating_counts_RDD = small_movie_ID_avg_ratings_RDD.map(lambda x: (x[0], x[1][0]))
 	print ('=======================')
-	print (small_movie_rating_counts_RDD.take(100))
+	print (small_movie_rating_counts_RDD.take(3))
 	print ('=======================')
+	# add "New user ratings" to small_ratings_data
+	new_user_ratings_RDD = get_new_input_data()
+	small_ratings_data_with_new_ratings_RDD = small_ratings_data.union(new_user_ratings_RDD)
+	print (small_ratings_data_with_new_ratings_RDD.take(10))
+	# re-train the model with merged data 
+	new_ratings_model = ALS.train(small_ratings_data_with_new_ratings_RDD, best_rank, seed=parameter['seed'], 
+                              iterations=parameter['iterations'], lambda_=parameter['regularization_parameter'])
 
-
-
-
+	print (new_ratings_model)
 	#complete_ratings_data, complete_movies_data,complete_movies_titles = get_data(full_dataset=True)
 	#print(complete_ratings_data.take(3))
 
