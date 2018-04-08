@@ -225,6 +225,22 @@ if __name__ == '__main__':
 	print ('=======================')
 	print (new_user_recommendations_RDD.take(10))
 	print ('=======================')
+	# Transform new_user_recommendations_RDD into pairs of the form (Movie ID, Predicted Rating)
+	new_user_recommendations_rating_RDD = new_user_recommendations_RDD.map(lambda x: (x.product, x.rating))
+	new_user_recommendations_rating_title_and_count_RDD = \
+	    new_user_recommendations_rating_RDD.join(small_movies_titles).join(small_movie_rating_counts_RDD)
+	new_user_recommendations_rating_title_and_count_RDD = \
+	new_user_recommendations_rating_title_and_count_RDD.map(lambda r: (r[1][0][1], r[1][0][0], r[1][1]))
+	top_movies = new_user_recommendations_rating_title_and_count_RDD.filter(lambda r: r[2]>=25).takeOrdered(25, key=lambda x: -x[1])
+	print ('=======================')
+	print ('TOP recommended movies (with more than 25 reviews):\n%s' %
+	        '\n'.join(map(str, top_movies)))
+	print ('=======================')
+
+	    
+
+
+
 
 
 
