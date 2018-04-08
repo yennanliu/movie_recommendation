@@ -104,6 +104,31 @@ def get_counts_and_averages(ID_and_ratings_tuple):
 
 
 
+def get_new_input_data():
+	new_user_ID = 0
+
+	# The format of each line is (userID, movieID, rating)
+	new_user_ratings = [
+	 (0,260,9), # Star Wars (1977)
+	 (0,1,8), # Toy Story (1995)
+	 (0,16,7), # Casino (1995)
+	 (0,25,8), # Leaving Las Vegas (1995)
+	 (0,32,9), # Twelve Monkeys (a.k.a. 12 Monkeys) (1995)
+	 (0,335,4), # Flintstones, The (1994)
+	 (0,379,3), # Timecop (1994)
+	 (0,296,7), # Pulp Fiction (1994)
+	 (0,858,10) , # Godfather, The (1972)
+	 (0,50,8) # Usual Suspects, The (1995)
+	]
+	new_user_ratings_RDD = sc.parallelize(new_user_ratings)
+	print ('New user ratings: %s' % new_user_ratings_RDD.take(10))
+	return new_user_ratings_RDD
+
+
+
+
+
+
 # ML 
 
 
@@ -168,6 +193,18 @@ if __name__ == '__main__':
 	print ('************')
 	ALS_model_predict(model,test_for_predict_RDD,test_RDD)
 	print ('************')
+	#### train with new input data ###
+	# get avg / count / features
+	small_movie_ID_with_ratings_RDD = (small_ratings_data.map(lambda x: (x[1], x[2])).groupByKey())
+	small_movie_ID_avg_ratings_RDD = small_movie_ID_with_ratings_RDD.map(get_counts_and_averages)
+	small_movie_rating_counts_RDD = small_movie_ID_avg_ratings_RDD.map(lambda x: (x[0], x[1][0]))
+	print ('=======================')
+	print (small_movie_rating_counts_RDD.take(100))
+	print ('=======================')
+
+
+
+
 	#complete_ratings_data, complete_movies_data,complete_movies_titles = get_data(full_dataset=True)
 	#print(complete_ratings_data.take(3))
 
