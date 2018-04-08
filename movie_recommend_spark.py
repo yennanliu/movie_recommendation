@@ -65,7 +65,8 @@ def get_data(full_dataset=False):
 		# fix dtype to float  
 		small_movies_data = small_movies_raw_data.filter(lambda line: line!=small_movies_raw_data_header)\
 		.map(lambda line: line.split(",")).map(lambda tokens: (tokens[0],tokens[1],tokens[2])).cache()
-		return small_ratings_data, small_movies_data
+		small_movies_titles = small_movies_data.map(lambda x: (int(x[0]),x[1]))
+		return small_ratings_data, small_movies_data, small_movies_titles
 
 	elif full_dataset==True:
 		#------ rating completed dataset  ------# 
@@ -83,7 +84,7 @@ def get_data(full_dataset=False):
 		complete_movies_data = complete_movies_raw_data.filter(lambda line: line!=complete_movies_raw_data_header)\
 		    .map(lambda line: line.split(",")).map(lambda tokens: (int(tokens[0]),tokens[1],tokens[2])).cache()
 		complete_movies_titles = complete_movies_data.map(lambda x: (int(x[0]),x[1]))
-		return complete_ratings_data, complete_movies_data
+		return complete_ratings_data, complete_movies_data, complete_movies_titles
 
  
 
@@ -157,7 +158,7 @@ if __name__ == '__main__':
 	# dataset preview 
 	get_data_preview()
 	# get data 
-	small_ratings_data,small_movies_data = get_data()
+	small_ratings_data, small_movies_data, small_movies_titles = get_data()
 	# train, test split 
 	training_RDD, validation_RDD, test_RDD, validation_for_predict_RDD, test_for_predict_RDD = train_test_split(small_ratings_data)
 	# ------------ Model Training  ------------ #
@@ -167,7 +168,7 @@ if __name__ == '__main__':
 	print ('************')
 	ALS_model_predict(model,test_for_predict_RDD,test_RDD)
 	print ('************')
-	#complete_ratings_data, complete_movies_data = get_data(full_dataset=True)
+	#complete_ratings_data, complete_movies_data,complete_movies_titles = get_data(full_dataset=True)
 	#print(complete_ratings_data.take(3))
 
 
