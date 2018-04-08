@@ -122,7 +122,7 @@ def get_new_input_data():
 	]
 	new_user_ratings_RDD = sc.parallelize(new_user_ratings)
 	print ('New user ratings: %s' % new_user_ratings_RDD.take(10))
-	return new_user_ratings_RDD
+	return new_user_ratings_RDD, new_user_ratings
 
 
 
@@ -207,18 +207,28 @@ if __name__ == '__main__':
 	small_movie_ID_with_ratings_RDD = (small_ratings_data.map(lambda x: (x[1], x[2])).groupByKey())
 	small_movie_ID_avg_ratings_RDD = small_movie_ID_with_ratings_RDD.map(get_counts_and_averages)
 	small_movie_rating_counts_RDD = small_movie_ID_avg_ratings_RDD.map(lambda x: (x[0], x[1][0]))
-	print ('=======================')
 	print (small_movie_rating_counts_RDD.take(3))
-	print ('=======================')
 	# add "New user ratings" to small_ratings_data
-	new_user_ratings_RDD = get_new_input_data()
+	new_user_ratings_RDD, new_user_ratings = get_new_input_data()
 	small_ratings_data_with_new_ratings_RDD = small_ratings_data.union(new_user_ratings_RDD)
 	print (small_ratings_data_with_new_ratings_RDD.take(10))
 	# re-train the model with merged data 
 	new_ratings_model = ALS.train(small_ratings_data_with_new_ratings_RDD, best_rank, seed=parameter['seed'], 
                               iterations=parameter['iterations'], lambda_=parameter['regularization_parameter'])
-
 	print (new_ratings_model)
+	new_user_ratings_ids = map(lambda x: x[1], new_user_ratings) # get just movie IDs
+	# keep just those not on the ID list (thanks Lei Li for spotting the error!)
+	new_user_unrated_movies_RDD = (small_ratings_data_with_new_ratings_RDD.filter(lambda x: x[0] not in new_user_ratings_ids).map(lambda x: (new_user_ID, x[0])))
+
+	# Use the input RDD, new_user_unrated_movies_RDD, with new_ratings_model.predictAll() to predict new ratings for the movies
+	new_user_recommendations_RDD = new_ratings_model.predictAll(small_movie_rating_counts_RDD)
+	print ('=======================')
+	print (new_user_recommendations_RDD.take(10))
+	print ('=======================')
+
+
+
+
 	#complete_ratings_data, complete_movies_data,complete_movies_titles = get_data(full_dataset=True)
 	#print(complete_ratings_data.take(3))
 
