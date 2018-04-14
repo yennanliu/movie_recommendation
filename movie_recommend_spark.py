@@ -235,9 +235,7 @@ if __name__ == '__main__':
 	# train ALS model 
 	model, predictions, rates_and_preds, min_error,best_rank, parameter = ALS_model(training_RDD,validation_RDD,validation_for_predict_RDD)
 	# predict with trained ALS model 
-	print ('************')
 	ALS_model_predict(model,test_for_predict_RDD,test_RDD)
-	print ('************')
 	# ------------ train with new input data ------------ #
 	# get avg / count / features
 	small_movie_rating_counts_RDD = get_feature(small_ratings_data)
@@ -253,25 +251,19 @@ if __name__ == '__main__':
 	new_user_ratings_ids = map(lambda x: x[1], new_user_ratings) # get just movie IDs
 	# keep just those not on the ID list (thanks Lei Li for spotting the error!)
 	new_user_unrated_movies_RDD = (small_ratings_data_with_new_ratings_RDD.filter(lambda x: x[0] not in new_user_ratings_ids).map(lambda x: (new_user_ID, x[0])))
-
 	# Use the input RDD, new_user_unrated_movies_RDD, with new_ratings_model.predictAll() to predict new ratings for the movies
 	#new_user_recommendations_RDD = new_ratings_model.predictAll(small_movie_rating_counts_RDD)
 	new_user_recommendations_RDD = new_ratings_model.predictAll(new_user_unrated_movies_RDD)
 	print ('=======================')
-	# filter duplicate recommended movie ouput 
-	print (new_user_recommendations_RDD.distinct().take(10))
+	print (new_user_recommendations_RDD.distinct().take(10)) # filter duplicate movie ouput 
 	print ('=======================')
 	# Transform new_user_recommendations_RDD into pairs of the form (Movie ID, Predicted Rating)
 	new_user_recommendations_rating_RDD = new_user_recommendations_RDD.map(lambda x: (x.product, x.rating))
-	"""
-	data form : 
+	"""1) data form : 
 	(movie_id, ((predict_rating, movie_name), ranting_movie_count ))
-
-	data sample : 
+	2) data sample : 
 	(73, ((8.550753515179233, '"Misérables'), 13)),
-	(309, ((9.178733659206515, '"Red Firecracker'), 3)),
-	(501, ((8.976854299938601, 'Naked (1993)'), 15)),
-	(429, ((5.073904792729662, 'Cabin Boy (1994)'), 9))
+	(309, ((9.178733659206515, '"Red Firecracker'), 3))
 	"""
 	new_user_recommendations_rating_title_and_count_RDD = \
 	    new_user_recommendations_rating_RDD.join(small_movies_titles).join(small_movie_rating_counts_RDD)
@@ -279,21 +271,11 @@ if __name__ == '__main__':
 	new_user_recommendations_rating_title_and_count_RDD = \
 	new_user_recommendations_rating_title_and_count_RDD.map(lambda r: (r[1][0][1], r[1][0][0], r[1][1]))
 	print (new_user_recommendations_rating_title_and_count_RDD.distinct().take(50))
-	# filter duplicate recommended movie ouput 
-	top_movies = new_user_recommendations_rating_title_and_count_RDD.distinct().filter(lambda r: r[2]>=25).takeOrdered(25, key=lambda x: -x[1])
+	top_movies = new_user_recommendations_rating_title_and_count_RDD.distinct().filter(lambda r: r[2]>=25).takeOrdered(25, key=lambda x: -x[1]) # filter duplicate movie ouput 
 	print ('=======================')
 	print ('TOP recommended movies (with more than 25 reviews):\n%s' %
 	        '\n'.join(map(str, top_movies)))
 	print ('=======================')
-
-	    
-
-
-
-
-
-
-
 	#complete_ratings_data, complete_movies_data,complete_movies_titles = get_data(full_dataset=True)
 	#print(complete_ratings_data.take(3))
 
