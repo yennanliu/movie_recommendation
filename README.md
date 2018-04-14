@@ -1,6 +1,15 @@
-# movie_recommendation
 
-- Building a light movie push system based on user rating log & item data
+movie_recommendation
+============
+Build a light movie recommend system via user rating, movie data, and other meta data via CF, KNN, and DL models. The output can be dump csv/DB, APIs or web APPs. 
+Main idea of this prove-of-concept project is implementing ML to pratical question and making it production. 
+
+> There will be 3 different ways building the different recommend systems.
+  Current plan is : Build CF model via Pyspark, build KNN model via scikit-learnm, and the
+  RNN model via Tensforflow/Keras. 
+
+Please check the theory intro, step-by-step notebook, and quick start start below.
+
 
 ### INTRO
 
@@ -9,15 +18,16 @@
 	- ubased_predict : User Based CF
 	- mbased_predict : Item Based CF
 	- similarityall_predict : All User Based CF with much smaller time complexity
-
-
 - KNN 
 	- dev 
-
-
 - DL 
 	- dev 
 
+
+
+
+### Process 
+- dev 
 
 
 ### QUICK START 
