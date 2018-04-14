@@ -218,7 +218,7 @@ if __name__ == '__main__':
 	"""
 	# dataset preview 
 	get_data_preview()
-	# get data 
+	# ------------ get data ------------ #
 	small_ratings_data, small_movies_data, small_movies_titles = get_data()
 	# train, test split 
 	training_RDD, validation_RDD, test_RDD, validation_for_predict_RDD, test_for_predict_RDD = train_test_split(small_ratings_data)
@@ -229,7 +229,7 @@ if __name__ == '__main__':
 	print ('************')
 	ALS_model_predict(model,test_for_predict_RDD,test_RDD)
 	print ('************')
-	#### train with new input data ###
+	# ------------ train with new input data ------------ #
 	# get avg / count / features
 	small_movie_ID_with_ratings_RDD = (small_ratings_data.map(lambda x: (x[1], x[2])).groupByKey())
 	small_movie_ID_avg_ratings_RDD = small_movie_ID_with_ratings_RDD.map(get_counts_and_averages)
@@ -239,7 +239,7 @@ if __name__ == '__main__':
 	new_user_ratings_RDD, new_user_ratings,new_user_ID = get_new_input_data()
 	small_ratings_data_with_new_ratings_RDD = small_ratings_data.union(new_user_ratings_RDD)
 	print (small_ratings_data_with_new_ratings_RDD.take(10))
-	# re-train the model with merged data 
+	# ------------ re-train with merged and new input data ------------ #
 	new_ratings_model = ALS.train(small_ratings_data_with_new_ratings_RDD, best_rank, seed=parameter['seed'], 
                               iterations=parameter['iterations'], lambda_=parameter['regularization_parameter'])
 	print (new_ratings_model)
