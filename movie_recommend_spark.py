@@ -119,6 +119,15 @@ def get_counts_and_averages(ID_and_ratings_tuple):
     return ID_and_ratings_tuple[0], (nratings, float(sum(x for x in ID_and_ratings_tuple[1]))/nratings)
 
 
+def get_feature(movie_RDD):
+    # get avg / count / features
+    small_movie_ID_with_ratings_RDD = (movie_RDD.map(lambda x: (x[1], x[2])).groupByKey())
+    small_movie_ID_avg_ratings_RDD = small_movie_ID_with_ratings_RDD.map(get_counts_and_averages)
+    small_movie_rating_counts_RDD = small_movie_ID_avg_ratings_RDD.map(lambda x: (x[0], x[1][0]))
+    print (small_movie_rating_counts_RDD)
+    return small_movie_rating_counts_RDD 
+
+
 
 def get_new_input_data():
 	new_user_ID = 0
@@ -231,9 +240,7 @@ if __name__ == '__main__':
 	print ('************')
 	# ------------ train with new input data ------------ #
 	# get avg / count / features
-	small_movie_ID_with_ratings_RDD = (small_ratings_data.map(lambda x: (x[1], x[2])).groupByKey())
-	small_movie_ID_avg_ratings_RDD = small_movie_ID_with_ratings_RDD.map(get_counts_and_averages)
-	small_movie_rating_counts_RDD = small_movie_ID_avg_ratings_RDD.map(lambda x: (x[0], x[1][0]))
+	small_movie_rating_counts_RDD = get_feature(small_ratings_data)
 	print (small_movie_rating_counts_RDD.take(3))
 	# add "New user ratings" to small_ratings_data
 	new_user_ratings_RDD, new_user_ratings,new_user_ID = get_new_input_data()
