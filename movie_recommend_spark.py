@@ -20,9 +20,10 @@ sc =SparkContext()
 
 
 # help functions 
-# ----------------------
 
-# Preprocess 
+
+# -------------------------------------
+# data preprocess 
 
 def get_data_preview():
 	datasets_path = '/Users/yennanliu/movie_recommendation/datasets/'
@@ -99,7 +100,10 @@ def get_data(full_dataset=False):
 		return complete_ratings_data, complete_movies_data, complete_movies_titles
 
  
+# -------------------------------------
 
+
+# ops 
 
 def train_test_split(dataset):
 	# split data into train (60%), validate (20%), and test (20%)
@@ -138,7 +142,18 @@ def get_new_input_data():
 
 
 
+def get_user_input_data(userid,movieid_array,rating_array):
+	new_user_ID = userid
+	new_user_ID_array=[new_user_ID for x in range(len(movieid_array))]
+	# The format of each line is (userID, movieID, rating)
+	new_user_ratings = list(zip(new_user_ID_array,movieid_array,rating_array))
+	new_user_ratings_RDD = sc.parallelize(new_user_ratings)
+	print ('New user ratings: %s' % new_user_ratings_RDD.take(10))
+	return new_user_ratings_RDD, new_user_ratings,new_user_ID
 
+
+
+# -------------------------------------
 
 
 # ML 
@@ -188,7 +203,7 @@ def ALS_model_predict(model,test_for_predict_RDD,test_RDD):
 
 
 
-# ----------------------
+# -------------------------------------
 
 
 if __name__ == '__main__':
