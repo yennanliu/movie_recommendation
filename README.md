@@ -54,9 +54,9 @@ $ git clone https://github.com/yennanliu/movie_recommendation.git
 # back to the root directory 
 $ cd ~
 # install pyspark
-$ bash /Users/<your_user_name>/movie_recommendation/install_pyspark.sh
+$ bash /Users/$USER/movie_recommendation/install_pyspark.sh
 # declare env variables  
-$ export SPARK_HOME=/Users/<your_user_name>/spark
+$ export SPARK_HOME=/Users/$USER/spark
 $ export PATH=$SPARK_HOME/bin:$PATH
 # run the pyspark model train script 
 $ spark-submit  movie_recommend_spark.py 
