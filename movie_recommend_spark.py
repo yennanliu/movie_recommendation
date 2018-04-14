@@ -229,10 +229,22 @@ if __name__ == '__main__':
 	print ('=======================')
 	# Transform new_user_recommendations_RDD into pairs of the form (Movie ID, Predicted Rating)
 	new_user_recommendations_rating_RDD = new_user_recommendations_RDD.map(lambda x: (x.product, x.rating))
+	"""
+	data form : 
+	(movie_id, ((predict_rating, movie_name), ranting_movie_count ))
+
+	data sample : 
+	(73, ((8.550753515179233, '"Misérables'), 13)),
+	(309, ((9.178733659206515, '"Red Firecracker'), 3)),
+	(501, ((8.976854299938601, 'Naked (1993)'), 15)),
+	(429, ((5.073904792729662, 'Cabin Boy (1994)'), 9))
+	"""
 	new_user_recommendations_rating_title_and_count_RDD = \
 	    new_user_recommendations_rating_RDD.join(small_movies_titles).join(small_movie_rating_counts_RDD)
+	print (new_user_recommendations_rating_title_and_count_RDD.distinct().take(50))
 	new_user_recommendations_rating_title_and_count_RDD = \
 	new_user_recommendations_rating_title_and_count_RDD.map(lambda r: (r[1][0][1], r[1][0][0], r[1][1]))
+	print (new_user_recommendations_rating_title_and_count_RDD.distinct().take(50))
 	# filter duplicate recommended movie ouput 
 	top_movies = new_user_recommendations_rating_title_and_count_RDD.distinct().filter(lambda r: r[2]>=25).takeOrdered(25, key=lambda x: -x[1])
 	print ('=======================')
