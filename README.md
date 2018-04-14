@@ -1,6 +1,6 @@
 # movie_recommendation
 
-	- Building a light movie push system based on user rating log & item data
+- Building a light movie push system based on user rating log & item data
 
 ### INTRO
 
