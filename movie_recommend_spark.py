@@ -38,6 +38,18 @@ def get_data_preview():
 	time.sleep(5)
 
 
+def get_movie_name_from_id(movie_title,id):
+	movie_list = dict(movie_title.take(10000))
+	try:
+		movie_name = movie_list[id]
+		print ('movie_id :' , id)
+		print ('movie_name :' , movie_name)
+		return movie_name
+	except Exception as e:
+		#print (e)
+		print ('insert movie_id :' , id)
+		print ('movie_id not exist')
+
 
 
 
