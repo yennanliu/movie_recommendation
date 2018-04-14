@@ -1,8 +1,8 @@
 # movie_recommendation
 
-	- `Building a light movie push system based on user rating log & item data`
+	- Building a light movie push system based on user rating log & item data
 
-### Intro
+### INTRO
 
 
 - Collaborative filtering (CF)
@@ -20,7 +20,7 @@
 
 
 
-### Quick start 
+### QUICK START 
 
 
 ```bash 
@@ -84,7 +84,7 @@ TOP recommended movies (with more than 25 reviews):
 
 
 
-### File structure 
+### FILE STRUCTURE 
 ```
 yennanliu@yennanliude-MacBook-Pro:~/movie_recommendation$ tree --si
 .
@@ -104,7 +104,7 @@ yennanliu@yennanliude-MacBook-Pro:~/movie_recommendation$ tree --si
 
 
 
-### Ref 
+### REFERENCE 
 
 - Movie recommendation 
 	- https://github.com/jadianes/spark-movie-lens
