@@ -19,31 +19,6 @@
 	- dev 
 
 
-### File structure 
-```
-yennanliu@yennanliude-MacBook-Pro:~/movie_recommendation$ tree --si
-.
-├── [2.8k]  README.md
-├── [ 384]  archive
-│   ├── [ 24k]  M_Recommend_Pyspark_demo.ipynb : demo nb of pyspark ML movie recommend model
-│   ├── [8.0k]  M_Recommend_Pyspark_demo.py    : M_Recommend_Pyspark_demo.ipynb in python script 
-│   ├── [ 832]  data                           : dataset for train_CF1.py
-│   ├── [1.9k]  feature.py                     : python script extract data features (dev)
-│   ├── [4.9k]  train_CF1.py                   : train via "user similarity", ( dataset:  archive/data)
-│   ├── [3.1k]  train_CF2.py                   : train via "CF", (dataset :  archive/train_data)
-│   ├── [ 929]  train_Graphlab.py              : train via "Graphlab" library
-│   ├── [ 224]  train_data                     : dataset for train_CF2.py   
-│   └── [2.8k]  train_lightFM.py               : train via "lightFM" library
-├── [ 160]  datasets                           : dataset for movie_recommend_spark.py and M_Recommend_Pyspark_demo.py
-├── [1.6k]  install_pyspark.sh                 : help script install local pyspark 
-├── [ 11k]  movie_recommend_spark.ipynb        : nb step by step demo for movie_recommend_spark.py
-├── [4.1k]  movie_recommend_spark.py           : movie recommend via pyspark ML library  
-└── [  96]  notebook
-    └── [187k]  MovieLens_EDA.ipynb            : EDA nb 
-
-7 directories, 53 files
-```
-
 
 ### Quick start 
 
@@ -56,8 +31,7 @@ $ cd ~
 # install pyspark
 $ bash /Users/$USER/movie_recommendation/install_pyspark.sh
 # declare env variables  
-$ export SPARK_HOME=/Users/$USER/spark
-$ export PATH=$SPARK_HOME/bin:$PATH
+$ export SPARK_HOME=/Users/$USER/spark && export PATH=$SPARK_HOME/bin:$PATH
 # run the pyspark model train script 
 $ spark-submit  movie_recommend_spark.py 
 ```
@@ -107,6 +81,28 @@ TOP recommended movies (with more than 25 reviews):
 ('"Piano', 7.846991400658464, 78)
 =======================
 ```
+
+
+
+### File structure 
+```
+yennanliu@yennanliude-MacBook-Pro:~/movie_recommendation$ tree --si
+.
+├── [2.8k]  README.md
+├── [ 384]  archive
+│   ├── [ 24k]  M_Recommend_Pyspark_demo.ipynb : demo nb of pyspark ML movie recommend model
+│   ├── [8.0k]  M_Recommend_Pyspark_demo.py    : M_Recommend_Pyspark_demo.ipynb in python script 
+├── [ 160]  datasets                           : dataset for movie_recommend_spark.py and  M_Recommend_Pyspark_demo.py
+├── [1.6k]  install_pyspark.sh                 : help script install local pyspark 
+├── [ 11k]  movie_recommend_spark.ipynb        : nb step by step demo for movie_recommend_spark.py
+├── [4.1k]  movie_recommend_spark.py           : movie recommend via pyspark ML library  
+└── [  96]  notebook
+    └── [187k]  MovieLens_EDA.ipynb            : EDA nb 
+
+7 directories, 53 files
+```
+
+
 
 ### Ref 
 
