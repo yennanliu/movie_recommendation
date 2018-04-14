@@ -122,7 +122,7 @@ def get_new_input_data():
 	]
 	new_user_ratings_RDD = sc.parallelize(new_user_ratings)
 	print ('New user ratings: %s' % new_user_ratings_RDD.take(10))
-	return new_user_ratings_RDD, new_user_ratings
+	return new_user_ratings_RDD, new_user_ratings,new_user_ID
 
 
 
@@ -209,7 +209,7 @@ if __name__ == '__main__':
 	small_movie_rating_counts_RDD = small_movie_ID_avg_ratings_RDD.map(lambda x: (x[0], x[1][0]))
 	print (small_movie_rating_counts_RDD.take(3))
 	# add "New user ratings" to small_ratings_data
-	new_user_ratings_RDD, new_user_ratings = get_new_input_data()
+	new_user_ratings_RDD, new_user_ratings,new_user_ID = get_new_input_data()
 	small_ratings_data_with_new_ratings_RDD = small_ratings_data.union(new_user_ratings_RDD)
 	print (small_ratings_data_with_new_ratings_RDD.take(10))
 	# re-train the model with merged data 
@@ -221,9 +221,11 @@ if __name__ == '__main__':
 	new_user_unrated_movies_RDD = (small_ratings_data_with_new_ratings_RDD.filter(lambda x: x[0] not in new_user_ratings_ids).map(lambda x: (new_user_ID, x[0])))
 
 	# Use the input RDD, new_user_unrated_movies_RDD, with new_ratings_model.predictAll() to predict new ratings for the movies
-	new_user_recommendations_RDD = new_ratings_model.predictAll(small_movie_rating_counts_RDD)
+	#new_user_recommendations_RDD = new_ratings_model.predictAll(small_movie_rating_counts_RDD)
+	new_user_recommendations_RDD = new_ratings_model.predictAll(new_user_unrated_movies_RDD)
 	print ('=======================')
-	print (new_user_recommendations_RDD.take(10))
+	# filter duplicate recommended movie ouput 
+	print (new_user_recommendations_RDD.distinct().take(10))
 	print ('=======================')
 	# Transform new_user_recommendations_RDD into pairs of the form (Movie ID, Predicted Rating)
 	new_user_recommendations_rating_RDD = new_user_recommendations_RDD.map(lambda x: (x.product, x.rating))
@@ -231,7 +233,8 @@ if __name__ == '__main__':
 	    new_user_recommendations_rating_RDD.join(small_movies_titles).join(small_movie_rating_counts_RDD)
 	new_user_recommendations_rating_title_and_count_RDD = \
 	new_user_recommendations_rating_title_and_count_RDD.map(lambda r: (r[1][0][1], r[1][0][0], r[1][1]))
-	top_movies = new_user_recommendations_rating_title_and_count_RDD.filter(lambda r: r[2]>=25).takeOrdered(25, key=lambda x: -x[1])
+	# filter duplicate recommended movie ouput 
+	top_movies = new_user_recommendations_rating_title_and_count_RDD.distinct().filter(lambda r: r[2]>=25).takeOrdered(25, key=lambda x: -x[1])
 	print ('=======================')
 	print ('TOP recommended movies (with more than 25 reviews):\n%s' %
 	        '\n'.join(map(str, top_movies)))
