@@ -11,6 +11,10 @@ Main idea of this prove-of-concept project is implementing ML to pratical questi
 Please check the theory intro, step-by-step notebook, and quick start start below.
 
 
+
+<img src="./images/model_demo.gif" width="600" height="279">
+
+
 ### INTRO
 
 
