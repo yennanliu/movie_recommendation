@@ -1,5 +1,9 @@
 
 movie_recommendation
+
+
+<img src="./images/model_demo.gif" width="600" height="279">
+
 ============
 Build a light movie recommend system via user rating, movie data, and other meta data via CF, KNN, and DL models. The output can be dump csv/DB, APIs or web APPs. 
 Main idea of this prove-of-concept project is implementing ML to pratical question and making it production. 
@@ -10,9 +14,6 @@ Main idea of this prove-of-concept project is implementing ML to pratical questi
 
 Please check the theory intro, step-by-step notebook, and quick start start below.
 
-
-
-<img src="./images/model_demo.gif" width="600" height="279">
 
 
 ### INTRO
