@@ -1,3 +1,4 @@
+from __future__ import print_function
 # python 3 
 # ML 
 from pyspark import SparkContext
@@ -58,6 +59,7 @@ def fetch_random_movie_id(movie_title_RDD):
     random_movie_id = np.random.randint(1,movie_count,5)
     print ('random movid id : ', random_movie_id)
     return random_movie_id
+
   
 def collect_random_movie_rating(random_movie_id):
 	print ('-------------------')
@@ -73,8 +75,8 @@ def collect_random_movie_rating(random_movie_id):
 	return output
 
 
-# -------------------------------------
 
+# -------------------------------------
 
 
 # data preprocess 
@@ -267,6 +269,17 @@ if __name__ == '__main__':
 	print (small_movie_rating_counts_RDD.take(3))
 	# add "New user ratings" to small_ratings_data
 	new_user_ratings_RDD, new_user_ratings,new_user_ID = get_new_input_data()
+
+	# ------ Method 1) ------
+	#new_user_ratings_RDD, new_user_ratings,new_user_ID = get_new_input_data()
+	# ------ Method 2) ------
+	new_user_ratings_RDD, new_user_ratings,new_user_ID = get_user_input_data(9997,[17,27,37],[2,1,0])
+	# ------ Method 3) ------
+	#r_movie_id = fetch_random_movie_id(small_movies_titles)
+	#r_movie_raring = collect_random_movie_rating(r_movie_id)
+	#new_user_ratings_RDD, new_user_ratings,new_user_ID = get_user_input_data(9997,r_movie_id,r_movie_raring)
+
+
 	small_ratings_data_with_new_ratings_RDD = small_ratings_data.union(new_user_ratings_RDD)
 	print (small_ratings_data_with_new_ratings_RDD.take(10))
 	# ------------ re-train with merged and new input data ------------ #
