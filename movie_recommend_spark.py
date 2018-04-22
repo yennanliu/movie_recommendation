@@ -39,8 +39,9 @@ def get_data_preview():
 	time.sleep(5)
 
 
-def get_movie_name_from_id(movie_title,id):
-	movie_list = dict(movie_title.take(10000))
+
+def get_movie_name_from_id(movie_title_data,id):
+	movie_list = dict(movie_title_data.collect())
 	try:
 		movie_name = movie_list[id]
 		print ('movie_id :' , id)
@@ -50,7 +51,6 @@ def get_movie_name_from_id(movie_title,id):
 		#print (e)
 		print ('insert movie_id :' , id)
 		print ('movie_id not exist')
-
 
 
 
