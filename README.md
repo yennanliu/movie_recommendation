@@ -4,23 +4,27 @@
 <img src="./images/model_demo.gif" width="600" height="279">
 
 
-## OVREVIEW 
+## INTRO 
 Build a light movie recommend system via user rating, movie data, and other meta data via CF, KNN, and DL models. The output can be dump csv/DB, APIs or web APPs. 
 Main idea of this prove-of-concept project is implementing ML to pratical question and making it production. 
 
 > There will be 4 different ways building the different recommend systems.
-  Current plan is : Build CF model via Pyspark, Popularity model via Numpy, KNN model via scikit-learnm, and the RNN model via Tensforflow/Keras. 
+  Current plan is : Build CF model via Pyspark, Popularity model via Numpy, KNN model via scikit-learn, and the RNN model via Tensforflow/Keras. 
 
 Please check the theory intro, step-by-step notebook, and quick start start below.
 
 
-### INTRO
+
+
+### THEORY 
 
 
 - Collaborative filtering (CF)
 	- ubased_predict : User Based CF
 	- mbased_predict : Item Based CF
 	- similarityall_predict : All User Based CF with much smaller time complexity
+- Popularity 
+	- dev 
 - KNN 
 	- dev 
 - DL 
@@ -28,9 +32,29 @@ Please check the theory intro, step-by-step notebook, and quick start start belo
 
 
 
-
 ### PROCESS  
 - dev 
+
+
+
+### FILE STRUCTURE 
+```
+yennanliu@yennanliude-MacBook-Pro:~/movie_recommendation$ tree --si
+.
+├── [2.8k]  README.md
+├── [ 384]  archive
+│   ├── [ 24k]  M_Recommend_Pyspark_demo.ipynb : demo nb of pyspark ML movie recommend model
+│   ├── [8.0k]  M_Recommend_Pyspark_demo.py    : M_Recommend_Pyspark_demo.ipynb in python script 
+├── [ 160]  datasets                           : dataset for movie_recommend_spark.py and  M_Recommend_Pyspark_demo.py
+├── [1.6k]  install_pyspark.sh                 : help script install local pyspark 
+├── [ 11k]  movie_recommend_spark_ALS.ipynb        : nb step by step demo for movie_recommend_spark_ALS.py
+├── [4.1k]  movie_recommend_spark_ALS.py           : movie recommend via pyspark ML library  
+└── [  96]  notebook
+    └── [187k]  MovieLens_EDA.ipynb            : EDA nb 
+
+7 directories, 53 files
+```
+
 
 
 ### QUICK START 
@@ -100,27 +124,6 @@ TOP recommended movies (with more than 25 reviews):
 ('Philadelphia (1993)', 2.5727445302939564, 86)
 .....
 ```
-
-
-
-### FILE STRUCTURE 
-```
-yennanliu@yennanliude-MacBook-Pro:~/movie_recommendation$ tree --si
-.
-├── [2.8k]  README.md
-├── [ 384]  archive
-│   ├── [ 24k]  M_Recommend_Pyspark_demo.ipynb : demo nb of pyspark ML movie recommend model
-│   ├── [8.0k]  M_Recommend_Pyspark_demo.py    : M_Recommend_Pyspark_demo.ipynb in python script 
-├── [ 160]  datasets                           : dataset for movie_recommend_spark.py and  M_Recommend_Pyspark_demo.py
-├── [1.6k]  install_pyspark.sh                 : help script install local pyspark 
-├── [ 11k]  movie_recommend_spark_ALS.ipynb        : nb step by step demo for movie_recommend_spark_ALS.py
-├── [4.1k]  movie_recommend_spark_ALS.py           : movie recommend via pyspark ML library  
-└── [  96]  notebook
-    └── [187k]  MovieLens_EDA.ipynb            : EDA nb 
-
-7 directories, 53 files
-```
-
 
 
 ### REFERENCE 
