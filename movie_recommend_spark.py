@@ -23,8 +23,8 @@ sc =SparkContext()
 
 
 # -------------------------------------
-# data preprocess 
 
+# user input new rating logics 
 def get_data_preview():
 	datasets_path = '/Users/yennanliu/movie_recommendation/datasets/'
 	small_ratings_file = os.path.join(datasets_path, 'ml-latest-small', 'ratings.csv')
@@ -40,8 +40,8 @@ def get_data_preview():
 
 
 
-def get_movie_name_from_id(movie_title_data,id):
-	movie_list = dict(movie_title_data.collect())
+def get_movie_name_from_id(movie_title_RDD,id):
+	movie_list = dict(movie_title_RDD.collect())
 	try:
 		movie_name = movie_list[id]
 		print ('movie_id :' , id)
@@ -53,6 +53,31 @@ def get_movie_name_from_id(movie_title_data,id):
 		print ('movie_id not exist')
 
 
+def fetch_random_movie_id(movie_title_RDD):
+    movie_count = int(movie_title_RDD.count())
+    random_movie_id = np.random.randint(1,movie_count,5)
+    print ('random movid id : ', random_movie_id)
+    return random_movie_id
+  
+def collect_random_movie_rating(random_movie_id):
+	print ('-------------------')
+	print ('Please rate following 5 random movies as new user teste interest : ')
+	print ('-------------------')
+	output = []
+	for movie_id in random_movie_id:
+		movie_name = get_movie_name_from_id(small_movies_titles, movie_id)
+		rating = float(input(" * What is your rating? "))
+		print ('-> Your rating for {} is : {}'.format(movie_name,float(rating)))
+		output.append(rating)
+	#print (list(zip(movie_name,output)))
+	return output
+
+
+# -------------------------------------
+
+
+
+# data preprocess 
 
 def get_data(full_dataset=False):
 
