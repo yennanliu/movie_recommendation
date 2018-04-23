@@ -1,6 +1,12 @@
 # python 3 
 
 
+# ref 
+# https://github.com/llSourcell/recommender_live/blob/master/Song%20Recommender_Python.ipynb
+# https://towardsdatascience.com/how-to-build-a-simple-song-recommender-296fcbc8c85
+
+
+
 import numpy as np
 import pandas as pd 
 import time
@@ -27,6 +33,10 @@ def data_preprocess(df):
     return movie_grouped
 
 
+def get_train_test_data(df):
+	train_data, test_data = train_test_split(df, test_size = 0.20, random_state=0)
+	return train_data, test_data
+
 
 
 # -------------------------------------
@@ -35,12 +45,15 @@ def data_preprocess(df):
 
 
 
+# ML 
+
 
 
 if __name__ == '__main__':
 	df_ratings = get_data()
 	movie_grouped = data_preprocess(df_ratings)
 	print (movie_grouped)
+	train_data, test_data = get_train_test_data(df_ratings)
 
 
 
