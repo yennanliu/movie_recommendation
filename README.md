@@ -65,7 +65,7 @@ yennanliu@yennanliude-MacBook-Pro:~/movie_recommendation$ tree --si
 # get the repo 
 $ git clone https://github.com/yennanliu/movie_recommendation.git
 # install pyspark and needed dataset 
-$ cd ~ && bash /Users/$USER/movie_recommendation/install_pyspark.sh  && cd movie_recommendation/ && bash download_dataset.sh
+$ cd ~ && bash /Users/$USER/movie_recommendation/install_pyspark.sh  && cd movie_recommendation/ && brew install Wget && bash download_dataset.sh
 # declare env variables  
 $ export SPARK_HOME=/Users/$USER/spark && export PATH=$SPARK_HOME/bin:$PATH
 # run the pyspark model train script 
