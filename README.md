@@ -5,8 +5,7 @@
 
 
 ## INTRO 
-Build a light movie recommend system via user rating, movie data, and other meta data via CF, KNN, and DL models. The output can be dump csv/DB, APIs or web APPs. 
-Main idea of this prove-of-concept project is implementing ML to pratical question and making it production. 
+Build various recommend systems via user rating, movie data, and other meta data via CF, KNN, and DL models.The main idea of this prove-of-concept project is "making data production" via ML/DL apart from analysis level. The output can be dump csv/DB, APIs or web APPs. 
 
 > There will be 4 different ways building the different recommend systems.
   Current plan is : Build CF model via Pyspark, Popularity model via Numpy, KNN model via scikit-learn, and the RNN model via Tensforflow/Keras. 
@@ -20,13 +19,15 @@ Please check the theory intro, step-by-step notebook, and quick start start belo
 
 
 - Collaborative filtering (CF)
-	- ubased_predict : User Based CF
-	- mbased_predict : Item Based CF
-	- similarityall_predict : All User Based CF with much smaller time complexity
+	- similarityall_predict : All User Based CF with much smaller time complexity via ALS
+	- Matrix Factorization :  Singular Value Decomposition (SVD)
+
 - Popularity 
-	- dev 
+	- Movie popularity based recommender 
+-Similarity
+	- Movie similarity based recommender 
 - KNN 
-	- dev 
+	- User similarity based recommender
 - DL 
 	- dev 
 
@@ -127,16 +128,20 @@ TOP recommended movies (with more than 25 reviews):
 ### REFERENCE 
 
 - Movie recommendation 
-	- https://github.com/jadianes/spark-movie-lens
-	- https://github.com/nchah/movielens-recommender
-	- https://github.com/narenkmanoharan/Movie-Recommender-System
-	- http://ampcamp.berkeley.edu/5/exercises/movie-recommendation-with-mllib.html
-	- https://github.com/srajangarg/movie-recommendation-algorithms
-	- https://www.kaggle.com/rounakbanik/the-movies-dataset/kernels
-	- https://blog.statsbot.co/recommendation-system-algorithms-ba67f39ac9a3
-	- http://dataaspirant.com/2015/05/25/collaborative-filtering-recommendation-engine-implementation-in-python/
-	- https://www.datacamp.com/community/tutorials/recommender-systems-python
-	- https://beckernick.github.io/matrix-factorization-recommender/
+	- ML 
+		- https://github.com/jadianes/spark-movie-lens
+		- https://github.com/nchah/movielens-recommender
+		- https://github.com/narenkmanoharan/Movie-Recommender-System
+		- http://ampcamp.berkeley.edu/5/exercises/movie-recommendation-with-mllib.html
+		- https://github.com/srajangarg/movie-recommendation-algorithms
+		- https://www.kaggle.com/rounakbanik/the-movies-dataset/kernels
+		- https://blog.statsbot.co/recommendation-system-algorithms-ba67f39ac9a3
+		- http://dataaspirant.com/2015/05/25/collaborative-filtering-recommendation-engine-implementation-in-python/
+		- https://www.datacamp.com/community/tutorials/recommender-systems-python
+		- https://beckernick.github.io/matrix-factorization-recommender/
+
+	- DL
+		- https://medium.com/hulu-tech-blog/content-based-video-relevance-prediction-b2c448e14752
 
 
 - Song recommendation
