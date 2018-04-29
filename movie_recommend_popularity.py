@@ -10,6 +10,8 @@
 * Recommend model based on popular movie 
 * Note that the output of this model is SAME TO ALL USERID 
 * Output : 
+
+userId :  6
 ---------
       userId  movieId  score  Rank
 264        6      296    267   1.0
@@ -136,10 +138,10 @@ if __name__ == '__main__':
     ### ML ###
     model = popularity_recommender()
     model.create(train_data, 'userId', 'movieId')
-    # recommend for user  5 
+    # recommend for user  6
     user_id = users[5]
     model.recommend(user_id)
-    # recommend for user 15 
+    # recommend for user 16 
     user_id = users[15]
     model.recommend(user_id)
 
