@@ -24,7 +24,7 @@ Please check the theory intro, step-by-step notebook, and quick start start belo
 
 - Popularity 
 	- Movie popularity based recommender 
--Similarity
+- Similarity
 	- Movie similarity based recommender 
 - KNN 
 	- User similarity based recommender
