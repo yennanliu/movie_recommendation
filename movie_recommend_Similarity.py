@@ -190,7 +190,7 @@ class item_similarity_recommender_py():
         #D. Use the cooccurence matrix to make recommendations
         #######################################################
         df_recommendations = self.generate_top_recommendations(user, cooccurence_matrix, all_movies, user_movies)
-                
+        print (df_recommendations)       
         return df_recommendations
     
     #Get similar items to given items
@@ -216,7 +216,7 @@ class item_similarity_recommender_py():
         #######################################################
         user = ""
         df_recommendations = self.generate_top_recommendations(user, cooccurence_matrix, all_movies, user_movies)
-         
+        print (df_recommendations)
         return df_recommendations
 
 
@@ -235,7 +235,7 @@ if __name__ == '__main__':
 	is_model = item_similarity_recommender_py()
 	is_model.create(train_data, 'userId', 'movieId')
 	#Print the songs for the user in training data
-	user_id = 20
+	user_id = 30
 	user_items = is_model.get_user_items(user_id)
 	#
 	print("------------------------------------------------------------------------------------")
