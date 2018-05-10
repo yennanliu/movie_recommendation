@@ -234,8 +234,8 @@ if __name__ == '__main__':
 	# modeling  
 	is_model = item_similarity_recommender_py()
 	is_model.create(train_data, 'userId', 'movieId')
-	#Print the songs for the user in training data
-	user_id = 30
+	#Print the movie for the user in training data
+	user_id = 37
 	user_items = is_model.get_user_items(user_id)
 	#
 	print("------------------------------------------------------------------------------------")
