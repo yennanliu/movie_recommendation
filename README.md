@@ -40,20 +40,24 @@ Please check the theory intro, step-by-step notebook, and quick start start belo
 
 ### FILE STRUCTURE 
 ```
-yennanliu@yennanliude-MacBook-Pro:~/movie_recommendation$ tree --si
+yennanliu@yennanliude-MacBook-Pro:~/movie_recommendation$  tree --si
 .
-├── [2.8k]  README.md
+├── [4.9k]  README.md
 ├── [ 384]  archive
-│   ├── [ 24k]  M_Recommend_Pyspark_demo.ipynb : demo nb of pyspark ML movie recommend model
-│   ├── [8.0k]  M_Recommend_Pyspark_demo.py    : M_Recommend_Pyspark_demo.ipynb in python script 
-├── [ 160]  datasets                           : dataset for movie_recommend_spark.py and  M_Recommend_Pyspark_demo.py
-├── [1.6k]  install_pyspark.sh                 : help script install local pyspark 
-├── [ 11k]  movie_recommend_spark_ALS.ipynb        : nb step by step demo for movie_recommend_spark_ALS.py
-├── [4.1k]  movie_recommend_spark_ALS.py           : movie recommend via pyspark ML library  
-└── [  96]  notebook
-    └── [187k]  MovieLens_EDA.ipynb            : EDA nb 
+├── [ 160]  datasets					   : main dataset (please download ml-latest via download_dataset.sh script )
+├── [ 580]  download_dataset.sh            : script download /dataset/ml-latest data 
+├── [1.6k]  install_pyspark.sh             : script install pyspark 
+├── [9.9k]  movie_recommend_Similarity.py  : movie recommend via user similarity
+├── [4.5k]  movie_recommend_popularity.py  : movie recommend via movie popularity
+├── [ 37k]  movie_recommend_spark_CF.ipynb : movie_recommend_spark_CF.py 's step by step nb demo 
+├── [ 13k]  movie_recommend_spark_CF.py    : movie recommend via CF (pyspark ML)  
+├── [  96]  notebook
+│   └── [187k]  MovieLens_EDA.ipynb        : EDA nb 
+├── [ 128]  ref
+│   ├── [440k]  Analysis_Algorithms_Movie\ Recommendation_Systems.pdf
+│   └── [1.4k]  reference.md
 
-7 directories, 53 files
+
 ```
 
 
