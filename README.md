@@ -44,7 +44,7 @@ yennanliu@yennanliude-MacBook-Pro:~/movie_recommendation$  tree --si
 .
 ├── [4.9k]  README.md
 ├── [ 384]  archive
-├── [ 160]  datasets					   : main dataset (please download ml-latest via download_dataset.sh script )
+├── [ 160]  datasets                       : main dataset (please download ml-latest via download_dataset.sh script )
 ├── [ 580]  download_dataset.sh            : script download /dataset/ml-latest data 
 ├── [1.6k]  install_pyspark.sh             : script install pyspark 
 ├── [9.9k]  movie_recommend_Similarity.py  : movie recommend via user similarity
@@ -53,9 +53,7 @@ yennanliu@yennanliude-MacBook-Pro:~/movie_recommendation$  tree --si
 ├── [ 13k]  movie_recommend_spark_CF.py    : movie recommend via CF (pyspark ML)  
 ├── [  96]  notebook
 │   └── [187k]  MovieLens_EDA.ipynb        : EDA nb 
-├── [ 128]  ref
-│   ├── [440k]  Analysis_Algorithms_Movie\ Recommendation_Systems.pdf
-│   └── [1.4k]  reference.md
+├── [ 128]  ref                            : reference, papers and related tech blogs 
 
 
 ```
