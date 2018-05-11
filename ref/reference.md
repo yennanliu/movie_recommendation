@@ -18,6 +18,9 @@
 	- DL
 		- https://github.com/robi56/Deep-Learning-for-Recommendation-Systems
 		- https://github.com/miguelgfierro/sciblog_support/blob/master/Intro_to_Recommendation_Systems/Intro_Recommender.ipynb
+		- https://github.com/hexiangnan/neural_collaborative_filtering
+		- https://arxiv.org/abs/1708.05031
+		- https://nipunbatra.github.io/blog/2017/neural-collaborative-filtering.html
 		- https://github.com/NVIDIA/DeepRecommender
 		- https://medium.com/hulu-tech-blog/content-based-video-relevance-prediction-b2c448e14752
 
