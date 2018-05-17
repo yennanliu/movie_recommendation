@@ -201,7 +201,7 @@ class item_similarity_recommender_py():
         ######################################################
         #B. Get all unique items (songs) in the training data
         ######################################################
-        all_songs = self.get_all_items_train_data()
+        all_movies = self.get_all_items_train_data()
         
         print("no. of unique songs in the training set: %d" % len(all_movies))
          
