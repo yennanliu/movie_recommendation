@@ -9,8 +9,7 @@ from sklearn.externals import joblib
 
 
 
-
-
+# -------------------------------------
 # help function 
 # data preprocess 
 
@@ -48,7 +47,28 @@ def get_benchmark_feature(df):
 	df_ratings_viewcount = pd.merge(df_ratings, view_count_total, on='movieId')
 	df_ratings_viewcount = pd.merge(df_ratings_viewcount, df_avg_rating, on='movieId')
 	return df_ratings_viewcount
-    
+
+
+
+def get_rating_deviation(df):
+    df_ = df.copy()
+    userlist = list(set(df.userId))
+    rating_divation = []
+    for user in userlist:
+        df_user = df[df.userId == user]
+        #avg_user_rating = df_user.rating.mean()
+        std_user_rating = df_user.rating.std()
+        rating_divation.append(std_user_rating)
+    df_std_rating = pd.DataFrame({'userId':userlist, 'std_rating': rating_divation })
+    print (df_std_rating.head(10))
+    #return df_std_rating
+    # merge back 
+    df_ = pd.merge(df_, df_std_rating, on='userId')
+    return df_
+ 
+# -------------------------------------
+# model 
+
 
 def recommend(df_feature):
 	# get movie with top view counts and avg_rating 
@@ -63,12 +83,21 @@ def recommend(df_feature):
 	return recommend_list_
 
 
+def recommend_by_user(df_feature):
+	pass 
 
 
+
+# -------------------------------------
 
 
 if __name__ == '__main__':
 	df_ratings = get_data()
+	# get rating deviation 
+	df_std_rating = get_rating_deviation(df_ratings)
+	print (df_std_rating)
+
+	# get movie rating 
 	df_ratings_viewcount = get_benchmark_feature(df_ratings)
 	print (df_ratings_viewcount)
 	recommend_movie = recommend(df_ratings_viewcount)
