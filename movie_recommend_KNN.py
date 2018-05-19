@@ -12,7 +12,7 @@ from sklearn.externals import joblib
 # ml 
 from sklearn import preprocessing
 from sklearn import cluster, tree
-
+from sklearn.decomposition import PCA
 
 
 
@@ -60,6 +60,11 @@ def get_user_movie_metrix(df):
 	# standardize 
 	for i in X:
 		df_ratings_pivot_std[i] = preprocessing.scale(df_ratings_pivot_std[i])
+	# pca : modify dimension form N  ->  2 
+	# http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html
+	pca = PCA(n_components=2)
+	pca.fit(df_ratings_pivot_std)
+	print (pca.fit_transform(df_ratings_pivot_std))
 	
 	print (df_ratings_pivot_)
 	print (df_ratings_pivot_std)
