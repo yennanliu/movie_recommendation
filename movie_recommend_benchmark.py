@@ -29,6 +29,14 @@ def data_preprocess(df):
     movie_grouped.sort_values(['view_count', 'movieId'], ascending = [0,1])
     return movie_grouped
 
+
+def get_train_test_data(df):
+	train_data, test_data = train_test_split(df, test_size = 0.20, random_state=0)
+	return train_data, test_data
+
+
+
+
 def get_benchmark_feature(df):
 	# total view 
 	view_count_total = df.groupby(['movieId']).count().reset_index()[['movieId','rating']]
@@ -42,10 +50,18 @@ def get_benchmark_feature(df):
 	return df_ratings_viewcount
     
 
+def recommend(df_feature):
+	# get movie with top view counts and avg_rating 
+	recommend_list = df_ratings_viewcount.groupby('movieId')\
+                                     .mean()[['total_view','avg_rating']]\
+                                     .sort_values(['total_view','avg_rating'],ascending=False)\
+                                     .reset_index()
+	# return top 20 movie as recommendation 
+	recommend_list_ = recommend_list.head(20) 
+	print ('recommend list  : ')
+	print (recommend_list_)
+	return recommend_list_
 
-def get_train_test_data(df):
-	train_data, test_data = train_test_split(df, test_size = 0.20, random_state=0)
-	return train_data, test_data
 
 
 
@@ -55,6 +71,7 @@ if __name__ == '__main__':
 	df_ratings = get_data()
 	df_ratings_viewcount = get_benchmark_feature(df_ratings)
 	print (df_ratings_viewcount)
+	recommend_movie = recommend(df_ratings_viewcount)
 	#movie_grouped = data_preprocess(df_ratings)
 	#print (movie_grouped)
 	#train_data, test_data = get_train_test_data(df_ratings)
