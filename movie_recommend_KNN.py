@@ -41,6 +41,10 @@ def get_train_test_data(df):
 	return train_data, test_data
 
 
+def fix_extreme_value(column):
+    print (column.max())
+    fixed_column = [x if x < 100 else column.mean()  for x in column] 
+    return  fixed_column
 
 
 def get_user_movie_metrix(df):
@@ -63,20 +67,22 @@ def get_user_movie_metrix(df):
 	# pca : modify dimension form N  ->  2 
 	# http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html
 	# need to find tuned pca dimension below 
-	pca = PCA(n_components=10)
+
+	pca = PCA(n_components=2)
 	pca.fit(df_ratings_pivot_std)
 	ratings_pivot_std_pca =  pca.fit_transform(df_ratings_pivot_std)
+	# fix extreme value (for clustering)
+	ratings_pivot_std_pca_ = pd.DataFrame(ratings_pivot_std_pca)
+	# set userID as index for output clustering group outcome
+	ratings_pivot_std_pca_['userId'] = ratings_pivot_std_pca_.index+1
+	ratings_pivot_std_pca_ = ratings_pivot_std_pca_.set_index('userId')
+	ratings_pivot_std_pca_[0] = fix_extreme_value(ratings_pivot_std_pca_[0])
+	ratings_pivot_std_pca_[1] = fix_extreme_value(ratings_pivot_std_pca_[1])
+	print (ratings_pivot_std_pca_.max())
 	
-	print (df_ratings_pivot_)
-	print (df_ratings_pivot_std)
-	return df_ratings_pivot_, df_ratings_pivot_std, ratings_pivot_std_pca
-
-
-def fix_extreme_value(column):
-    print (column.max())
-    fixed_column = [x if x < 100 else column.mean()  for x in column] 
-    return  fixed_column
-
+	#print (df_ratings_pivot_)
+	#print (df_ratings_pivot_std)
+	return df_ratings_pivot_, df_ratings_pivot_std, ratings_pivot_std_pca_
 
 
 # -------------------------------------
@@ -87,16 +93,19 @@ def fix_extreme_value(column):
 def KNN_model(user_movie_metrix,df_ratings_pivot):
 	# kmeans clustering 
 	kmean = cluster.KMeans(n_clusters=10, max_iter=300, random_state=4000)
-	kmean.fit(ratings_pivot_std_pca)
+	kmean.fit(user_movie_metrix)
 	# add lebel to user table 
 	df_ratings_pivot['group'] = kmean.labels_
 	#df_train['group'] = kmean.labels_ 
 	print ('*'*10)
+	print ('*** Cluster output : ')
 	print (df_ratings_pivot)
+	print ('*** User group  : ')
+	print (df_ratings_pivot.group.value_counts())
 	print ('*'*10)
 	return df_ratings_pivot
 
-	
+
 
 
 
@@ -106,9 +115,9 @@ def KNN_model(user_movie_metrix,df_ratings_pivot):
 if __name__ == '__main__':
 	df_ratings = get_data()
 	# get user-movie matrix
-	df_ratings_pivot_, df_ratings_pivot_std, ratings_pivot_std_pca = get_user_movie_metrix(df_ratings)
+	df_ratings_pivot_, df_ratings_pivot_std, ratings_pivot_std_pca_ = get_user_movie_metrix(df_ratings)
 	# KNN modeling  
-	df_ratings_pivot_group = KNN_model(ratings_pivot_std_pca,df_ratings_pivot_)
+	df_ratings_pivot_group = KNN_model(ratings_pivot_std_pca_,df_ratings_pivot_)
 	### todo : filter outler / refine df_ratings_pivot_std (user-movie matrix)
 
 
