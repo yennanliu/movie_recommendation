@@ -8,7 +8,6 @@ import numpy as np
 import time
 from sklearn.externals import joblib
 
-
 # ml 
 from sklearn import preprocessing
 from sklearn import cluster, tree
@@ -64,7 +63,7 @@ def get_user_movie_metrix(df):
 	# standardize 
 	for i in X:
 		df_ratings_pivot_std[i] = preprocessing.scale(df_ratings_pivot_std[i])
-	# pca : modify dimension form N  ->  2 
+	# pca : modify dimension from N  ->  2 
 	# http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html
 	# need to find tuned pca dimension below 
 
