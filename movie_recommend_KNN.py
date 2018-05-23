@@ -72,6 +72,18 @@ def get_user_movie_metrix(df):
 	return df_ratings_pivot_, df_ratings_pivot_std, ratings_pivot_std_pca
 
 
+def fix_extreme_value(column):
+    print (column.max())
+    fixed_column = [x if x < 100 else column.mean()  for x in column] 
+    return  fixed_column
+
+
+
+# -------------------------------------
+# model 
+
+
+
 def KNN_model(user_movie_metrix,df_ratings_pivot):
 	# kmeans clustering 
 	kmean = cluster.KMeans(n_clusters=10, max_iter=300, random_state=4000)
@@ -84,11 +96,7 @@ def KNN_model(user_movie_metrix,df_ratings_pivot):
 	print ('*'*10)
 	return df_ratings_pivot
 
-# -------------------------------------
-# model 
-
-
-
+	
 
 
 
