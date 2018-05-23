@@ -62,14 +62,27 @@ def get_user_movie_metrix(df):
 		df_ratings_pivot_std[i] = preprocessing.scale(df_ratings_pivot_std[i])
 	# pca : modify dimension form N  ->  2 
 	# http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html
-	pca = PCA(n_components=2)
+	# need to find tuned pca dimension below 
+	pca = PCA(n_components=10)
 	pca.fit(df_ratings_pivot_std)
-	print (pca.fit_transform(df_ratings_pivot_std))
+	ratings_pivot_std_pca =  pca.fit_transform(df_ratings_pivot_std)
 	
 	print (df_ratings_pivot_)
 	print (df_ratings_pivot_std)
-	return df_ratings_pivot_,df_ratings_pivot_std
+	return df_ratings_pivot_, df_ratings_pivot_std, ratings_pivot_std_pca
 
+
+def KNN_model(user_movie_metrix,df_ratings_pivot):
+	# kmeans clustering 
+	kmean = cluster.KMeans(n_clusters=10, max_iter=300, random_state=4000)
+	kmean.fit(ratings_pivot_std_pca)
+	# add lebel to user table 
+	df_ratings_pivot['group'] = kmean.labels_
+	#df_train['group'] = kmean.labels_ 
+	print ('*'*10)
+	print (df_ratings_pivot)
+	print ('*'*10)
+	return df_ratings_pivot
 
 # -------------------------------------
 # model 
@@ -85,7 +98,10 @@ def get_user_movie_metrix(df):
 if __name__ == '__main__':
 	df_ratings = get_data()
 	# get user-movie matrix
-	df_user_movie_matrix = get_user_movie_metrix(df_ratings)
+	df_ratings_pivot_, df_ratings_pivot_std, ratings_pivot_std_pca = get_user_movie_metrix(df_ratings)
+	# KNN modeling  
+	df_ratings_pivot_group = KNN_model(ratings_pivot_std_pca,df_ratings_pivot_)
+	### todo : filter outler / refine df_ratings_pivot_std (user-movie matrix)
 
 
 
