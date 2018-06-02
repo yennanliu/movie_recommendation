@@ -3,6 +3,7 @@
 - Movie recommendation 
 	- THEORY 
 		- https://nikhilwins.wordpress.com/2015/09/18/movie-recommendations-how-does-netflix-do-it-a-9-step-coding-intuitive-guide-into-collaborative-filtering/
+		- http://ihong-blog.logdown.com/posts/411133
 	- ML 
 		- https://github.com/jadianes/spark-movie-lens
 		- https://github.com/nchah/movielens-recommender

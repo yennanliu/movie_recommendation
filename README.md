@@ -22,6 +22,53 @@ Please check the theory intro, step-by-step notebook, and quick start start belo
 
 - Collaborative Filtering (CF)
 	- User-Based Collaborative Filter
+```python  
+
+# 1)
+# consider there is an user movie ranting matrix :
+# x-axis : user
+# y-axis : movie 
+
+	[[ 2  ?  0  0  4]
+	 [ ?  ?  8  5  4]
+	 [ 1 1  0  ?   3]
+	 [ 3 2  2  ?   1]
+	 [ 1 2  3  1   1] 
+	 [ 1 2  3  ?   ?]]
+
+# 2)
+# the purpose of user-based CF is predicting the unknown rating of the movies haven't # rated by the user and give recommendation based on user silimarity 
+# for example if we have 3 users have following rating 
+user1 	 [ 3 2  2  ?   1]
+user2	 [ 1 2  3  1   1] 
+user3	 [ 1 2  3  ?   ?]
+# then based on user silimarity, we can say user2 and user3 are "much similar" then others. So we can push user2's movie taste to user3 
+
+
+# 3)
+# Here is the logic in python 
+
+def cosine_similarity(v,w):
+	import numpy as np 
+    # v,w is a vector, return the cosine between the two vectors,
+    # value between -1~1
+    return np.dot(v,w)/(math.sqrt(np.dot(v,v) * np.dot(w,w)))
+
+
+def users_similarity(users_movie_matrix):
+    users_movie_matrix = []
+    for i,user in enumerate(users_movie_matrix):
+        similarity_vector = []
+        for j in range(len(users_movie_matrix)):
+        	# use cosine similarity
+            similarity_val=cosine_similarity(user, users_movie_matrix[j])
+            similarity_vector.append(similarity_val)
+        users_movie_matrix.append(similarity_vector)
+    return users_movie_matrix
+
+
+```
+
 	- Item-Based Collaborative Filter
 
 - Popularity 
