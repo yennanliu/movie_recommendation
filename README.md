@@ -25,7 +25,7 @@ Please check the theory intro, step-by-step notebook, and quick start start belo
 ```python  
 
 # 1)
-# consider there is an user movie ranting matrix :
+# consider there is an user movie rating matrix :
 # x-axis : user
 # y-axis : movie 
 
@@ -37,8 +37,8 @@ Please check the theory intro, step-by-step notebook, and quick start start belo
 	 [ 1 2  3  ?   ?]]
 
 # 2)
-# the purpose of user-based CF is predicting the unknown rating of the movies haven't # rated by the user and give recommendation based on user silimarity 
-# for example if we have 3 users have following rating 
+# the purpose of user-based CF is predicting the unknown rating of the movies haven't rated by the given user and give recommendation based on the user silimarity 
+# for example if we have 3 user rating as below:
 user1 	 [ 3 2  2  ?   1]
 user2	 [ 1 2  3  1   1] 
 user3	 [ 1 2  3  ?   ?]
@@ -69,7 +69,7 @@ def users_similarity(users_movie_matrix):
 
 ```
 
-	- Item-Based Collaborative Filter
+    - Item-Based Collaborative Filter
 
 - Popularity 
 	- Movie popularity based recommender 
