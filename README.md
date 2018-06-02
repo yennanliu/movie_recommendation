@@ -21,8 +21,10 @@ Please check the theory intro, step-by-step notebook, and quick start start belo
 
 
 - Collaborative Filtering (CF)
-	- User-Based Collaborative Filter
+
 ```python  
+
+####  - User-Based Collaborative Filter
 
 # 1)
 # consider there is an user movie rating matrix :
@@ -69,7 +71,13 @@ def users_similarity(users_movie_matrix):
 
 ```
 
-    - Item-Based Collaborative Filter
+```python 
+
+    ####  - Item-Based Collaborative Filter
+    # dev 
+    
+```
+
 
 - Popularity 
 	- Movie popularity based recommender 
