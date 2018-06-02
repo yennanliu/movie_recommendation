@@ -68,14 +68,19 @@ yennanliu@yennanliude-MacBook-Pro:~/movie_recommendation$  tree --si
 ```bash 
 # get the repo 
 $ git clone https://github.com/yennanliu/movie_recommendation.git
+# get needed dataset 
+$ cd ~ && cd movie_recommendation/ && brew install Wget && bash download_dataset.sh
+
+```
+
+```bash
+### CF model via spark ### 
 # install pyspark and needed dataset 
 $ cd ~ && bash /Users/$USER/movie_recommendation/install_pyspark.sh  && cd movie_recommendation/ && brew install Wget && bash download_dataset.sh
 # declare env variables  
 $ export SPARK_HOME=/Users/$USER/spark && export PATH=$SPARK_HOME/bin:$PATH
 # run the pyspark model train script 
 $ spark-submit  movie_recommend_spark.py 
-```
-```bash
 
 # output 
 For rank 4 the RMSE is 0.9432575570983046
@@ -128,6 +133,98 @@ TOP recommended movies (with more than 25 reviews):
 .....
 ```
 
+
+```bash 
+### user similarity model ###
+$ python movie_recommend_Similarity.py 
+
+# output 
+
+------------------------------------------------------------------------------------
+Training data movies for the user userid: 37:
+------------------------------------------------------------------------------------
+3481
+3564
+364
+4018
+1246
+3948
+2085
+912
+4034
+4054
+2028
+3538
+1307
+3977
+3751
+1196
+940
+1193
+2858
+1907
+595
+920
+2081
+1
+902
+2273
+4011
+4015
+----------------------------------------------------------------------
+Recommendation process going on:
+----------------------------------------------------------------------
+------------
+[3481, 3564, 364, 4018, 1246, 3948, 2085, 912, 4034, 4054, 2028, 3538, 1307, 3977, 3751, 1196, 940, 1193, 2858, 1907, 595, 920, 2081, 1, 902, 2273, 4011, 4015]
+------------
+no. of unique movies in the training set: 8401
+Non zero values in cooccurence_matrix :142279
+   userId  movieId    rating  view_count
+0    37.0   1380.0  0.167462         1.0
+1    37.0   2918.0  0.165759         2.0
+2    37.0   1270.0  0.165678         3.0
+3    37.0    919.0  0.163948         4.0
+4    37.0   2762.0  0.163071         5.0
+5    37.0   1682.0  0.162160         6.0
+6    37.0   4027.0  0.160869         7.0
+7    37.0   2797.0  0.159535         8.0
+8    37.0   1704.0  0.158849         9.0
+9    37.0   4306.0  0.158516        10.0
+
+
+```
+
+
+```bash 
+### Benchmark model ###
+$  python movie_recommend_benchmark.py
+
+# output 
+
+recommend list  : 
+    movieId  total_view  avg_rating
+0       356       341.0    4.054252
+1       296       324.0    4.256173
+2       318       311.0    4.487138
+3       593       304.0    4.138158
+4       260       291.0    4.221649
+5       480       274.0    3.706204
+6      2571       259.0    4.183398
+7         1       247.0    3.872470
+8       527       244.0    4.303279
+9       589       237.0    4.006329
+10     1196       234.0    4.232906
+11      110       228.0    3.945175
+12     1270       226.0    4.015487
+13      608       224.0    4.256696
+14     2858       220.0    4.236364
+15     1198       220.0    4.193182
+16      780       218.0    3.483945
+17     1210       217.0    4.059908
+18      588       215.0    3.674419
+19      457       213.0    3.953052
+
+```
 
 ### REFERENCE
 - dev 
