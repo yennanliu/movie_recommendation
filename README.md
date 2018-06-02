@@ -21,17 +21,16 @@ Please check the theory intro, step-by-step notebook, and quick start start belo
 
 
 - Collaborative Filtering (CF)
-	- similarityall_predict : All User Based CF with much smaller time complexity via ALS
-	- Matrix Factorization :  Singular Value Decomposition (SVD)
+	- User-Based Collaborative Filter
+	- Item-Based Collaborative Filter
 
 - Popularity 
 	- Movie popularity based recommender 
 
 - Similarity
-	- Movie similarity based recommender 
 	- User similarity based recommender (KNN)
 - DL 
-	- dev 
+	- Collaborative Filtering  via Neural network  
 
 
 
