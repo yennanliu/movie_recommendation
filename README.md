@@ -1,10 +1,9 @@
 
 # movie_recommendation
 
-![image](https://github.com/yennanliu/movie_recommendation/blob/master/images/netflix.jpg
-)
 
-<img src="./images/model_demo.gif" width="800" height="279">
+<img src ="https://github.com/yennanliu/movie_recommendation/blob/master/images/netflix.jpg" width="800" height="400">
+<img src="./images/model_demo.gif" width="800" height="400">
 
 
 ## INTRO 
