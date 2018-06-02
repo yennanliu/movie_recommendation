@@ -1,6 +1,8 @@
 
 # movie_recommendation
 
+![image](https://github.com/yennanliu/movie_recommendation/images/netflix.png)
+
 <img src="./images/model_demo.gif" width="600" height="279">
 
 
