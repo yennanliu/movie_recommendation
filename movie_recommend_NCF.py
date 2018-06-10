@@ -66,14 +66,14 @@ class NCF_model(Sequential):
 
     # The constructor for the class
     def __init__(self, n_users, m_items, k_factors, **kwargs):
-        # P is the embedding layer that creates an User by latent factors matrix.
-        # If the intput is a user_id, P returns the latent factor vector for that user.
+        # U is the embedding layer that creates an User by latent factors matrix.
+        # If the intput is a user_id, U returns the latent factor vector for that user.
         U = Sequential()
         U.add(Embedding(n_users, k_factors, input_length=1))
         U.add(Reshape((k_factors,)))
 
-        # Q is the embedding layer that creates a Movie by latent factors matrix.
-        # If the input is a movie_id, Q returns the latent factor vector for that movie.
+        # M is the embedding layer that creates a Movie by latent factors matrix.
+        # If the input is a movie_id, M returns the latent factor vector for that movie.
         M = Sequential()
         M.add(Embedding(m_items, k_factors, input_length=1))
         M.add(Reshape((k_factors,)))
