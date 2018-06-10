@@ -91,6 +91,7 @@ def get_user_movie_metrix(df):
 
 def KNN_model(user_movie_metrix,df_ratings_pivot):
 	# kmeans clustering 
+	# can tune the KNN super-parameter below 
 	kmean = cluster.KMeans(n_clusters=10, max_iter=300, random_state=4000)
 	kmean.fit(user_movie_metrix)
 	# add lebel to user table 
@@ -117,7 +118,23 @@ if __name__ == '__main__':
 	df_ratings_pivot_, df_ratings_pivot_std, ratings_pivot_std_pca_ = get_user_movie_metrix(df_ratings)
 	# KNN modeling  
 	df_ratings_pivot_group = KNN_model(ratings_pivot_std_pca_,df_ratings_pivot_)
+	# top 10 movies in all group (mean rating)
+	for group_ in list(set(df_ratings_pivot_group.group)):
+	    print ('---------- recommend movie : ----------')
+	    print ('group = ', group_)
+	    print ('movie id ,  rating')
+	    print (df_ratings_pivot_group[df_ratings_pivot_group.group==group_]\
+	                          .iloc[:,:-1]\
+	                          .mean(axis=0)\
+	                          .sort_values(ascending=False)\
+	                          .head(10))
+
+	"""
+	
 	### todo : filter outler / refine df_ratings_pivot_std (user-movie matrix)
+	
+	"""
+                     
 
 
 
