@@ -51,12 +51,22 @@ def get_user_movie_metrix(df):
 	df_ = df[cols]
 	df_ratings_grouped = df_.groupby(['userId', 'movieId']).sum()
 	df_ratings_pivot = pd.pivot_table(df_ratings_grouped,columns=['movieId'],index=['userId'],aggfunc=np.sum)
-	# approach 1 : fill n/a data with 0 
-	df_ratings_pivot_ = df_ratings_pivot.fillna(0)
-	df_ratings_pivot_.columns= list(set(df_.movieId))
-	df_ratings_pivot_.reset_index()
-	# approach 2 : fill n/a data with mean 
+	
+	#### approach 1 : fill n/a data with 0  ####
 	#df_ratings_pivot_ = df_ratings_pivot.fillna(0)
+	#df_ratings_pivot_.columns= list(set(df_.movieId))
+	#df_ratings_pivot_.reset_index()
+
+	#### approach 2 : fill n/a data with mean  ####
+	for index, row in df_ratings_pivot.iterrows():
+		row_mean = df_ratings_pivot.iloc[index-1].mean()
+		#print (row_mean)
+		df_ratings_pivot.iloc[index-1].fillna(row_mean, inplace=True)
+
+	df_ratings_pivot_ = df_ratings_pivot.copy()  
+
+	#### approach 3 : work with "timestamp" ####
+	# dev 
 	
 	X = df_ratings_pivot_.iloc[:,1:].fillna(0)
 	df_ratings_pivot_std = df_ratings_pivot_.copy()
@@ -130,7 +140,7 @@ if __name__ == '__main__':
 	                          .head(10))
 
 	"""
-	
+
 	### todo : filter outler / refine df_ratings_pivot_std (user-movie matrix)
 	
 	"""
