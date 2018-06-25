@@ -96,37 +96,26 @@ class NCF_model(Sequential):
 
 
 if __name__ == '__main__':
-	df_ratings = get_data()
-	# Define constants
-	K_FACTORS = 100 # The number of dimensional embeddings for movies and users
-	TEST_USER = 2000 # A random test user (user_id = 2000)
-	max_userid = max(df_ratings.userId)
-	max_movieid  =  max(df_ratings.movieId)
-	Users = df_ratings.userId.values
-	Movies = df_ratings.movieId.values
-	Ratings = df_ratings.rating.values
+    df_ratings = get_data()
+    # Define constants
+    K_FACTORS = 10 # The number of dimensional embeddings for movies and users
+    TEST_USER = 2000 # A random test user (user_id = 2000)
+    max_userid = max(df_ratings.userId)
+    max_movieid  =  max(df_ratings.movieId)
+    Users = df_ratings.head(1000).userId.values
+    Movies = df_ratings.head(1000).movieId.values
+    Ratings = df_ratings.head(1000).rating.values
 
-	########## modeling ##########
-	model = NCF_model(max_userid, max_movieid, K_FACTORS)
-	# Compile the model using MSE as the loss function and the AdaMax learning algorithm
-	model.compile(loss='mse', optimizer='adamax')
-	# Callbacks monitor the validation loss
-	# Save the model weights each time the validation loss has improved
-	callbacks = [EarlyStopping('val_loss', patience=2), 
-	             ModelCheckpoint('weights.h5', save_best_only=True)]
-	# Use 30 epochs, 90% training data, 10% validation data 
-	history = model.fit([Users, Movies], Ratings, nb_epoch=3, validation_split=.1, verbose=2, callbacks=callbacks)
-
-
-
-
-
-
-
-
-
-
-
+    ########## modeling ##########
+    model = NCF_model(max_userid, max_movieid, K_FACTORS)
+    # Compile the model using MSE as the loss function and the AdaMax learning algorithm
+    model.compile(loss='mse', optimizer='adamax')
+    # Callbacks monitor the validation loss
+    # Save the model weights each time the validation loss has improved
+    callbacks = [EarlyStopping('val_loss', patience=2), ModelCheckpoint('weights.h5', save_best_only=True)]
+    # Use 30 epochs, 90% training data, 10% validation data 
+    history = model.fit([Users, Movies], Ratings, nb_epoch=3, validation_split=.1, verbose=2, callbacks=callbacks)
+    history.history
 
 
 
