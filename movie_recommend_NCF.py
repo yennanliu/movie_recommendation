@@ -55,6 +55,9 @@ def get_data():
     return df_ratings
 
 
+# Function to predict the ratings given User ID and Movie ID
+def predict_rating(user_id, movie_id):
+    return trained_model.rate(user_id - 1, movie_id - 1)
 
 # -------------------------------------
 # model 
@@ -84,8 +87,8 @@ class NCF_model(Sequential):
         self.add(Merge([U, M], mode='dot', dot_axes=1))
 
     # The rate function to predict user's rating of unrated items
-    def rate(self, user_id, item_id):
-        return self.predict([np.array([user_id]), np.array([item_id])])[0][0]
+    def rate(self, userId, movieId):
+        return self.predict([np.array([userId]), np.array([movieId])])[0][0]
 
 
 
@@ -98,7 +101,7 @@ class NCF_model(Sequential):
 if __name__ == '__main__':
     df_ratings = get_data()
     # Define constants
-    K_FACTORS = 10 # The number of dimensional embeddings for movies and users
+    K_FACTORS = 100 # The number of dimensional embeddings for movies and users
     TEST_USER = 2000 # A random test user (user_id = 2000)
     max_userid = max(df_ratings.userId)
     max_movieid  =  max(df_ratings.movieId)
@@ -116,8 +119,24 @@ if __name__ == '__main__':
     # Use 30 epochs, 90% training data, 10% validation data 
     history = model.fit([Users, Movies], Ratings, nb_epoch=3, validation_split=.1, verbose=2, callbacks=callbacks)
     history.history
-
-
+    # Show the best validation RMSE
+    min_val_loss, idx = min((val, idx) for (idx, val) in enumerate(history.history['val_loss']))
+    print ('Minimum RMSE at epoch', '{:d}'.format(idx+1), '=', '{:.4f}'.format(math.sqrt(min_val_loss)))
+    ### Use the pre-trained model  (dev) ### 
+    #trained_model = CFModel(max_userid, max_movieid, K_FACTORS)
+    # Load weights
+    #trained_model.load_weights('weights.h5')
+    # predict 
+    TEST_USER = 99 
+    Users[Users['userId'] == TEST_USER]
+    user_ratings = Ratings[Ratings['userId'] == TEST_USER][['userId', 'movieId', 'rating']]
+    user_ratings['prediction'] = user_ratings.apply(lambda x: predict_rating(TEST_USER, x['movieId']), axis=1)
+    user_ratings.sort_values(by='rating', 
+                         ascending=False).merge(movies, 
+                                                on='movieId', 
+                                                how='inner', 
+                                                suffixes=['_u', '_m']).head(20)
+    print (user_ratings)
 
 
 
