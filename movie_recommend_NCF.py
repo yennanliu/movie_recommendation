@@ -56,8 +56,8 @@ def get_data():
 
 
 # Function to predict the ratings given User ID and Movie ID
-def predict_rating(user_id, movie_id):
-    return trained_model.rate(user_id - 1, movie_id - 1)
+def predict_rating(userId, movieId,model_):
+    return model_.rate(userId - 1, movieId - 1)
 
 # -------------------------------------
 # model 
@@ -127,15 +127,16 @@ if __name__ == '__main__':
     # Load weights
     #trained_model.load_weights('weights.h5')
     # predict 
-    TEST_USER = 99 
-    Users[Users['userId'] == TEST_USER]
-    user_ratings = Ratings[Ratings['userId'] == TEST_USER][['userId', 'movieId', 'rating']]
-    user_ratings['prediction'] = user_ratings.apply(lambda x: predict_rating(TEST_USER, x['movieId']), axis=1)
-    user_ratings.sort_values(by='rating', 
-                         ascending=False).merge(movies, 
-                                                on='movieId', 
-                                                how='inner', 
-                                                suffixes=['_u', '_m']).head(20)
+    TEST_USER = 12
+    print ('Users  : ', Users)
+    #Users[Users['userId'] == TEST_USER]
+    user_ratings = df_ratings[df_ratings['userId'] == TEST_USER][['userId', 'movieId', 'rating']]
+    user_ratings['prediction'] = user_ratings.apply(lambda x: predict_rating(TEST_USER, x['movieId'],model), axis=1)
+    #user_ratings.sort_values(by='rating', 
+    #                     ascending=False).merge(movies, 
+    #                                            on='movieId', 
+    #                                            how='inner', 
+    #                                            suffixes=['_u', '_m']).head(20)
     print (user_ratings)
 
 
