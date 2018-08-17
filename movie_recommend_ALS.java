@@ -93,15 +93,15 @@ public class movie_recommend_ALS {
     // $example on$
     String PATH = "/Users/yennanliu/movie_recommendation/datasets/ml-latest-small/ratings.csv";
     //JavaRDD<Rating> ratingsRDD = spark.read().textFile(PATH).javaRDD()
-      Dataset<Row> ratings = spark.read().option("header", "true").csv(PATH);
-      //Path does not exist: file:/Users/yennanliu/data/ml-latest-small/rating.csv;
+    Dataset<Row> ratings = spark.read().option("header", "true").csv(PATH);
+    Dataset<Row> ratings_ = ratings.withColumn("userId", ratings.col("userId").cast("double"))
+                                   .withColumn("movieId", ratings.col("movieId").cast("double"))
+                                   .withColumn("rating", ratings.col("rating").cast("double")); 
 
-      //.load("../spark/data/mllib/sample_libsvm_data.txt");
-    //Dataset<Row> ratings = spark.createDataFrame(ratingsRDD, Rating.class);
     System.out.println("----------------- print dataset ----------------- ");
-    ratings.show(); 
+    ratings_.show(); 
     System.out.println("----------------- print dataset ----------------- ");
-    Dataset<Row>[] splits = ratings.randomSplit(new double[]{0.8, 0.2});
+    Dataset<Row>[] splits = ratings_.randomSplit(new double[]{0.8, 0.2});
     Dataset<Row> training = splits[0];
     Dataset<Row> test = splits[1];
 
@@ -132,10 +132,10 @@ public class movie_recommend_ALS {
     Dataset<Row> movieRecs = model.recommendForAllItems(10);
 
     // Generate top 10 movie recommendations for a specified set of users
-    Dataset<Row> users = ratings.select(als.getUserCol()).distinct().limit(15);
+    Dataset<Row> users = ratings_.select(als.getUserCol()).distinct().limit(15);
     Dataset<Row> userSubsetRecs = model.recommendForUserSubset(users, 10);
     // Generate top 10 user recommendations for a specified set of movies
-    Dataset<Row> movies = ratings.select(als.getItemCol()).distinct().limit(15);
+    Dataset<Row> movies = ratings_.select(als.getItemCol()).distinct().limit(15);
     Dataset<Row> movieSubSetRecs = model.recommendForItemSubset(movies, 10);
     // $example off$
     userRecs.show();
