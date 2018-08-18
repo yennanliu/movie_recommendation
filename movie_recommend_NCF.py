@@ -1,18 +1,14 @@
-
-
 # python3 
 
 """
-
 * 1) 
 
-    - A) Get the idea from 
-    - https://github.com/hexiangnan/neural_collaborative_filtering
-    - https://arxiv.org/abs/1708.05031
+- A) Get the idea from 
+- https://github.com/hexiangnan/neural_collaborative_filtering
+- https://arxiv.org/abs/1708.05031
 
-    - B) modify the code from 
-    - https://github.com/khanhnamle1994/movielens
-
+- B) modify the code from 
+- https://github.com/khanhnamle1994/movielens
 
 * 2) Terms  
 
@@ -21,14 +17,9 @@
 - For a movie, its latent features determine the amount of action, romance, story-line, a famous actor, etc. 
 - https://stats.stackexchange.com/questions/108059/meaning-of-latent-features
 
-
 """
 
-
-
-
-
-# ops
+# OPS 
 import pandas as pd 
 from sklearn.model_selection import train_test_split
 import numpy as np
@@ -51,7 +42,7 @@ from keras.optimizers import Adam
 from keras.regularizers import l2
 
 
-# -------------------------------------
+# -------------------------------------------------------------------------
 # help function 
 
 def get_data():
@@ -65,10 +56,8 @@ def get_data():
 def predict_rating(userId, movieId,model_):
     return model_.rate(userId - 1, movieId - 1)
 
-# -------------------------------------
+# -------------------------------------------------------------------------
 # model 
-
-
 
 
 class NCF_model_V1(Sequential):
@@ -154,7 +143,7 @@ class NCF_model_V3(Sequential):
         return model
 
 
-# -------------------------------------
+# -------------------------------------------------------------------------
 # execute the processes 
 
 def run():
@@ -212,7 +201,7 @@ def run():
 
 
 
-# -------------------------------------
+# -------------------------------------------------------------------------
 
 if __name__ == '__main__':
     run()
