@@ -127,39 +127,11 @@ class NCF_model_V2(Sequential):
 
 
 
-    def get_model_(num_playlists, num_items, latent_dim, regs=[0,0]):
-        # Input variables
-        playlist_input = Input(shape=(1,), dtype='int32', name = 'playlist_input')
-        item_input = Input(shape=(1,), dtype='int32', name = 'item_input')
-
-        MF_Embedding_playlist = Embedding(input_dim = num_playlists, output_dim = latent_dim, name = 'playlist_embedding',
-                                      init = init_normal, W_regularizer = l2(regs[0]), input_length=1)
-        MF_Embedding_Item = Embedding(input_dim = num_items, output_dim = latent_dim, name = 'item_embedding',
-                                      init = init_normal, W_regularizer = l2(regs[1]), input_length=1)   
-        
-        # Crucial to flatten an embedding vector!
-        playlist_latent = Flatten()(MF_Embedding_playlist(playlist_input))
-        item_latent = Flatten()(MF_Embedding_Item(item_input))
-        
-        # Element-wise product of playlist and item embeddings 
-        predict_vector = merge([playlist_latent, item_latent], mode = 'mul')
-        
-        # Final prediction layer
-        #prediction = Lambda(lambda x: K.sigmoid(K.sum(x)), output_shape=(1,))(predict_vector)
-        prediction = Dense(1, activation='sigmoid', init='lecun_uniform', name = 'prediction')(predict_vector)
-        
-        model = Model(input=[playlist_input, item_input], 
-                    output=prediction)
-        return model
-
-
-
 
 # -------------------------------------
+# execute the processes 
 
-
-
-if __name__ == '__main__':
+def run():
     df_ratings = get_data()
     # Define constants
     K_FACTORS = 100 # The number of dimensional embeddings for movies and users
@@ -171,8 +143,11 @@ if __name__ == '__main__':
     Ratings = df_ratings.head(3000).rating.values
 
     ########## modeling ##########
+    # ----- model 1  -----
     #model = NCF_model(max_userid, max_movieid, K_FACTORS)
+    # ----- model 2  -----
     model = NCF_model_V2(max_userid, max_movieid, K_FACTORS)
+    
     # Compile the model using MSE as the loss function and the AdaMax learning algorithm
     model.compile(loss='mse', optimizer='adamax')
     # Callbacks monitor the validation loss
@@ -200,6 +175,19 @@ if __name__ == '__main__':
     #                                            how='inner', 
     #                                            suffixes=['_u', '_m']).head(20)
     print (user_ratings.sort_values(by='rating', ascending=False))
+
+
+
+
+
+
+
+
+
+# -------------------------------------
+
+if __name__ == '__main__':
+    run()
 
 
 
