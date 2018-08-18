@@ -101,11 +101,8 @@ class NCF_model(Sequential):
 
 class NCF_model_V2(Sequential):
 
-    def __init__(shape, name=None):
-        return initializers.normal(shape, scale=0.01, name=name)
-
-    # The rate function to predict user's rating of unrated items
-    def get_model(self, n_users, m_items, k_factors, **kwargs):
+    def __init__(self, n_users, m_items, k_factors, **kwargs):
+        #initializers.normal(shape, scale=0.01, name=name)
         # U is the embedding layer that creates an User by latent factors matrix.
         # If the intput is a user_id, U returns the latent factor vector for that user.
         U = Sequential()
@@ -118,12 +115,12 @@ class NCF_model_V2(Sequential):
         M.add(Embedding(m_items, k_factors, input_length=1))
         M.add(Reshape((k_factors,)))
 
-        super(NCF_model, self).__init__(**kwargs)
+        super(NCF_model_V2, self).__init__(**kwargs)
         
         # The Merge layer takes the dot product of user and movie latent factor vectors to return the corresponding rating.
         self.add(Merge([U, M], mode='dot', dot_axes=1))
         self.add(Dense(1, activation='sigmoid',init='lecun_uniform'))
-        #prediction = Dense(1, activation='sigmoid', init='lecun_uniform', name = 'prediction')(predict_vector)
+
 
     def rate(self, userId, movieId):
         return self.predict([np.array([userId]), np.array([movieId])])[0][0]
@@ -169,19 +166,20 @@ if __name__ == '__main__':
     TEST_USER = 2000 # A random test user (user_id = 2000)
     max_userid = max(df_ratings.userId)
     max_movieid  =  max(df_ratings.movieId)
-    Users = df_ratings.head(1000).userId.values
-    Movies = df_ratings.head(1000).movieId.values
-    Ratings = df_ratings.head(1000).rating.values
+    Users = df_ratings.head(3000).userId.values
+    Movies = df_ratings.head(3000).movieId.values
+    Ratings = df_ratings.head(3000).rating.values
 
     ########## modeling ##########
-    model = NCF_model(max_userid, max_movieid, K_FACTORS)
+    #model = NCF_model(max_userid, max_movieid, K_FACTORS)
+    model = NCF_model_V2(max_userid, max_movieid, K_FACTORS)
     # Compile the model using MSE as the loss function and the AdaMax learning algorithm
     model.compile(loss='mse', optimizer='adamax')
     # Callbacks monitor the validation loss
     # Save the model weights each time the validation loss has improved
     callbacks = [EarlyStopping('val_loss', patience=2), ModelCheckpoint('weights.h5', save_best_only=True)]
     # Use 30 epochs, 90% training data, 10% validation data 
-    history = model.fit([Users, Movies], Ratings, nb_epoch=30, validation_split=.1, verbose=2, callbacks=callbacks)
+    history = model.fit([Users, Movies], Ratings, nb_epoch=5, validation_split=.1, verbose=2, callbacks=callbacks)
     history.history
     # Show the best validation RMSE
     min_val_loss, idx = min((val, idx) for (idx, val) in enumerate(history.history['val_loss']))
