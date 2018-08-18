@@ -40,9 +40,16 @@ import sys
 import math
 import argparse
 # ML 
-from keras.layers import Embedding, Reshape, Merge
 from keras.models import Sequential
 from keras.callbacks import Callback, EarlyStopping, ModelCheckpoint
+import keras
+from keras import backend as K
+from keras import initializers
+from keras.models import Sequential, Model, load_model, save_model
+from keras.layers.core import Dense, Lambda, Activation
+from keras.layers import Embedding, Input, Dense, merge, Reshape, Merge, Flatten
+from keras.optimizers import Adam
+from keras.regularizers import l2
 
 
 # -------------------------------------
@@ -92,6 +99,63 @@ class NCF_model(Sequential):
 
 
 
+class NCF_model_V2(Sequential):
+
+    def __init__(shape, name=None):
+        return initializers.normal(shape, scale=0.01, name=name)
+
+    # The rate function to predict user's rating of unrated items
+    def get_model(self, n_users, m_items, k_factors, **kwargs):
+        # U is the embedding layer that creates an User by latent factors matrix.
+        # If the intput is a user_id, U returns the latent factor vector for that user.
+        U = Sequential()
+        U.add(Embedding(n_users, k_factors, input_length=1))
+        U.add(Reshape((k_factors,)))
+
+        # M is the embedding layer that creates a Movie by latent factors matrix.
+        # If the input is a movie_id, M returns the latent factor vector for that movie.
+        M = Sequential()
+        M.add(Embedding(m_items, k_factors, input_length=1))
+        M.add(Reshape((k_factors,)))
+
+        super(NCF_model, self).__init__(**kwargs)
+        
+        # The Merge layer takes the dot product of user and movie latent factor vectors to return the corresponding rating.
+        self.add(Merge([U, M], mode='dot', dot_axes=1))
+        self.add(Dense(1, activation='sigmoid',init='lecun_uniform'))
+        #prediction = Dense(1, activation='sigmoid', init='lecun_uniform', name = 'prediction')(predict_vector)
+
+    def rate(self, userId, movieId):
+        return self.predict([np.array([userId]), np.array([movieId])])[0][0]
+
+
+
+    def get_model_(num_playlists, num_items, latent_dim, regs=[0,0]):
+        # Input variables
+        playlist_input = Input(shape=(1,), dtype='int32', name = 'playlist_input')
+        item_input = Input(shape=(1,), dtype='int32', name = 'item_input')
+
+        MF_Embedding_playlist = Embedding(input_dim = num_playlists, output_dim = latent_dim, name = 'playlist_embedding',
+                                      init = init_normal, W_regularizer = l2(regs[0]), input_length=1)
+        MF_Embedding_Item = Embedding(input_dim = num_items, output_dim = latent_dim, name = 'item_embedding',
+                                      init = init_normal, W_regularizer = l2(regs[1]), input_length=1)   
+        
+        # Crucial to flatten an embedding vector!
+        playlist_latent = Flatten()(MF_Embedding_playlist(playlist_input))
+        item_latent = Flatten()(MF_Embedding_Item(item_input))
+        
+        # Element-wise product of playlist and item embeddings 
+        predict_vector = merge([playlist_latent, item_latent], mode = 'mul')
+        
+        # Final prediction layer
+        #prediction = Lambda(lambda x: K.sigmoid(K.sum(x)), output_shape=(1,))(predict_vector)
+        prediction = Dense(1, activation='sigmoid', init='lecun_uniform', name = 'prediction')(predict_vector)
+        
+        model = Model(input=[playlist_input, item_input], 
+                    output=prediction)
+        return model
+
+
 
 
 # -------------------------------------
@@ -105,9 +169,9 @@ if __name__ == '__main__':
     TEST_USER = 2000 # A random test user (user_id = 2000)
     max_userid = max(df_ratings.userId)
     max_movieid  =  max(df_ratings.movieId)
-    Users = df_ratings.head(10000).userId.values
-    Movies = df_ratings.head(10000).movieId.values
-    Ratings = df_ratings.head(10000).rating.values
+    Users = df_ratings.head(1000).userId.values
+    Movies = df_ratings.head(1000).movieId.values
+    Ratings = df_ratings.head(1000).rating.values
 
     ########## modeling ##########
     model = NCF_model(max_userid, max_movieid, K_FACTORS)
