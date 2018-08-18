@@ -140,9 +140,9 @@ def run():
     TEST_USER = 2000 
     max_userid = max(df_ratings.userId)
     max_movieid  =  max(df_ratings.movieId)
-    Users = df_ratings.head(3000).userId.values
-    Movies = df_ratings.head(3000).movieId.values
-    Ratings = df_ratings.head(3000).rating.values
+    Users = df_ratings.head(1000).userId.values
+    Movies = df_ratings.head(1000).movieId.values
+    Ratings = df_ratings.head(1000).rating.values
 
     # --------------  MODELING  --------------
     # ----- model 1  -----
@@ -154,7 +154,7 @@ def run():
     model.compile(loss='mse', optimizer='adamax')
     # Callbacks monitor the validation loss
     # Save the model weights each time the validation loss has improved
-    #callbacks = [EarlyStopping('val_loss', patience=2), ModelCheckpoint('weights.h5', save_best_only=True)]
+    callbacks = [EarlyStopping('val_loss', patience=2), ModelCheckpoint('weights.h5', save_best_only=True)]
     # --------------  Use 30 epochs, 90% training data, 10% validation data   --------------
     history = model.fit([Users, Movies], Ratings, nb_epoch=5, validation_split=.1, verbose=2, callbacks=callbacks)
     history.history
