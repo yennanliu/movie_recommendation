@@ -134,36 +134,38 @@ class NCF_model_V2(Sequential):
 def run():
     df_ratings = get_data()
     # Define constants
-    K_FACTORS = 100 # The number of dimensional embeddings for movies and users
-    TEST_USER = 2000 # A random test user (user_id = 2000)
+    # The number of dimensional embeddings for movies and users
+    K_FACTORS = 100 
+    # A random test user (user_id = 2000)
+    TEST_USER = 2000 
     max_userid = max(df_ratings.userId)
     max_movieid  =  max(df_ratings.movieId)
     Users = df_ratings.head(3000).userId.values
     Movies = df_ratings.head(3000).movieId.values
     Ratings = df_ratings.head(3000).rating.values
 
-    ########## modeling ##########
+    # --------------  MODELING  --------------
     # ----- model 1  -----
     #model = NCF_model(max_userid, max_movieid, K_FACTORS)
     # ----- model 2  -----
     model = NCF_model_V2(max_userid, max_movieid, K_FACTORS)
-    
+
     # Compile the model using MSE as the loss function and the AdaMax learning algorithm
     model.compile(loss='mse', optimizer='adamax')
     # Callbacks monitor the validation loss
     # Save the model weights each time the validation loss has improved
-    callbacks = [EarlyStopping('val_loss', patience=2), ModelCheckpoint('weights.h5', save_best_only=True)]
-    # Use 30 epochs, 90% training data, 10% validation data 
+    #callbacks = [EarlyStopping('val_loss', patience=2), ModelCheckpoint('weights.h5', save_best_only=True)]
+    # --------------  Use 30 epochs, 90% training data, 10% validation data   --------------
     history = model.fit([Users, Movies], Ratings, nb_epoch=5, validation_split=.1, verbose=2, callbacks=callbacks)
     history.history
     # Show the best validation RMSE
     min_val_loss, idx = min((val, idx) for (idx, val) in enumerate(history.history['val_loss']))
     print ('Minimum RMSE at epoch', '{:d}'.format(idx+1), '=', '{:.4f}'.format(math.sqrt(min_val_loss)))
-    ### Use the pre-trained model  (dev) ### 
+    # --------------  Use the pre-trained model  (dev)  --------------
     #trained_model = CFModel(max_userid, max_movieid, K_FACTORS)
     # Load weights
     #trained_model.load_weights('weights.h5')
-    # predict 
+    # -------------- predict  --------------
     TEST_USER = 12
     print ('Users  : ', Users)
     #Users[Users['userId'] == TEST_USER]
