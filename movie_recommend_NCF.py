@@ -6,13 +6,12 @@
 
 * 1) 
 
-- A) Get the idea from 
-- https://github.com/hexiangnan/neural_collaborative_filtering
-- https://arxiv.org/abs/1708.05031
+    - A) Get the idea from 
+    - https://github.com/hexiangnan/neural_collaborative_filtering
+    - https://arxiv.org/abs/1708.05031
 
-- B) modify the code from 
-- https://github.com/khanhnamle1994/movielens
-
+    - B) modify the code from 
+    - https://github.com/khanhnamle1994/movielens
 
 
 * 2) Terms  
@@ -72,7 +71,7 @@ def predict_rating(userId, movieId,model_):
 
 
 
-class NCF_model(Sequential):
+class NCF_model_V1(Sequential):
 
     # The constructor for the class
     def __init__(self, n_users, m_items, k_factors, **kwargs):
@@ -127,6 +126,33 @@ class NCF_model_V2(Sequential):
 
 
 
+class NCF_model_V3(Sequential):
+
+    def init_normal(shape, name=None):
+        return initializations.normal(shape, scale=0.01, name=name)
+
+    def get_model(n_users, m_items, latent_dim, regs=[0,0]):
+        # Input variables
+        user_input = Input(shape=(1,), dtype='int32', name = 'user_input')
+        item_input = Input(shape=(1,), dtype='int32', name = 'item_input')
+
+        MF_Embedding_user = Embedding(input_dim = n_users, output_dim = latent_dim, name = 'user_embedding',
+                                      init = init_normal, W_regularizer = l2(regs[0]), input_length=1)
+        MF_Embedding_Item = Embedding(input_dim = m_items, output_dim = latent_dim, name = 'item_embedding',
+                                      init = init_normal, W_regularizer = l2(regs[1]), input_length=1)   
+        
+        # Crucial to flatten an embedding vector!
+        user_latent = Flatten()(MF_Embedding_user(user_input))
+        item_latent = Flatten()(MF_Embedding_Item(item_input))
+        
+        # Element-wise product of playlist and item embeddings 
+        predict_vector = merge([user_latent, item_latent], mode = 'mul')
+        
+        # Final prediction layer
+        prediction = Dense(1, activation='sigmoid', init='lecun_uniform', name = 'prediction')(predict_vector)     
+        model = Model(input=[user_input, item_input], output=prediction)
+        return model
+
 
 # -------------------------------------
 # execute the processes 
@@ -146,7 +172,7 @@ def run():
 
     # --------------  MODELING  --------------
     # ----- model 1  -----
-    #model = NCF_model(max_userid, max_movieid, K_FACTORS)
+    #model = NCF_model_V1(max_userid, max_movieid, K_FACTORS)
     # ----- model 2  -----
     model = NCF_model_V2(max_userid, max_movieid, K_FACTORS)
 
