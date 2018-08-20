@@ -228,11 +228,12 @@ def run():
     # ----- model 1  -----
     #model = NCF_model_V1(max_userid, max_movieid, K_FACTORS)
     # ----- model 2  -----
-    #model = NCF_model_V2(max_userid, max_movieid, K_FACTORS)
+    model = NCF_model_V2(max_userid, max_movieid, K_FACTORS)
     # ----- model 3  -----
     #model = NCF_model_V3(max_userid, max_movieid, K_FACTORS)
     
     # ------------------------- for MODEL V4   -------------------------
+    """
     # ----- model 4  -----
     model = NCF_model_V4(max_userid, max_movieid, K_FACTORS,regs).get_model()
 
@@ -249,13 +250,13 @@ def run():
                          validation_split=0.20, batch_size=batch_size, nb_epoch=1, verbose=0, shuffle=True)
         print(hist.history)
     # ------------------------- for MODEL V4   -------------------------
+    """
 
 
 
 
-
-
-
+    # Compile the model using MSE as the loss function and the AdaMax learning algorithm
+    model.compile(loss='mse', optimizer='adamax')
     # Callbacks monitor the validation loss
     # Save the model weights each time the validation loss has improved
     callbacks = [EarlyStopping('val_loss', patience=2), ModelCheckpoint('weights.h5', save_best_only=True)]
