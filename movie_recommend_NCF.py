@@ -38,7 +38,7 @@ from keras import backend as K
 from keras import initializers
 from keras.models import Sequential, Model, load_model, save_model
 from keras.layers.core import Dense, Lambda, Activation
-from keras.layers import Embedding, Input, Dense, merge, Reshape, Merge, Flatten
+from keras.layers import Embedding, Input, Dropout, Dense, merge, Reshape, Merge, Flatten
 from keras.optimizers import Adam
 from keras.regularizers import l2
 
@@ -158,6 +158,11 @@ class NCF_model_V3(Sequential):
         # The Merge layer takes the dot product of user and movie latent factor vectors to return the corresponding rating.
         self.add(Merge([U, M], mode='dot', dot_axes=1))
         self.add(Dense(1, activation='sigmoid',init='lecun_uniform'))
+        # add experiment layers 
+        self.add(Dense(1, activation='relu',init='lecun_uniform'))
+        self.add(Dense(1, activation='sigmoid',init='lecun_uniform'))
+        # dropout 
+        self.add(Dropout(0.2))
 
 
     def rate(self, userId, movieId):
@@ -219,18 +224,18 @@ def run():
     regs = [0,0]
     max_userid = max(df_ratings.userId)
     max_movieid  =  max(df_ratings.movieId)
-    Users = df_ratings.head(1000).userId.values
-    Movies = df_ratings.head(1000).movieId.values
-    Ratings = df_ratings.head(1000).rating.values
+    Users = df_ratings.head(5000).userId.values
+    Movies = df_ratings.head(5000).movieId.values
+    Ratings = df_ratings.head(5000).rating.values
 
     # --------------  MODELING  --------------
 
     # ----- model 1  -----
     #model = NCF_model_V1(max_userid, max_movieid, K_FACTORS)
     # ----- model 2  -----
-    model = NCF_model_V2(max_userid, max_movieid, K_FACTORS)
+    #model = NCF_model_V2(max_userid, max_movieid, K_FACTORS)
     # ----- model 3  -----
-    #model = NCF_model_V3(max_userid, max_movieid, K_FACTORS)
+    model = NCF_model_V3(max_userid, max_movieid, K_FACTORS)
     
     # ------------------------- for MODEL V4   -------------------------
     """
@@ -257,6 +262,8 @@ def run():
 
     # Compile the model using MSE as the loss function and the AdaMax learning algorithm
     model.compile(loss='mse', optimizer='adamax')
+    # print model architecture 
+    print (model.summary())
     # Callbacks monitor the validation loss
     # Save the model weights each time the validation loss has improved
     callbacks = [EarlyStopping('val_loss', patience=2), ModelCheckpoint('weights.h5', save_best_only=True)]
