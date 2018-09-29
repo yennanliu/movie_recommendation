@@ -25,6 +25,9 @@
 		- https://github.com/NVIDIA/DeepRecommender
 		- https://medium.com/hulu-tech-blog/content-based-video-relevance-prediction-b2c448e14752
 
+	- Notebook
+		- https://www.kaggle.com/ibtesama/getting-started-with-a-movie-recommendation-system/?utm_medium=social&utm_source=facebook.com&utm_campaign=Weekly-Kernel-Awards
+
 
 - Song recommendation
 
