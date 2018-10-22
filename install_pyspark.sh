@@ -1,5 +1,13 @@
 #!/bin/sh
 
+
+
+########
+# Source  : 
+# https://github.com/yennanliu/utility_shell/blob/master/spark/install_pyspark.sh
+########
+
+
 # ref 
 # https://blog.sicara.com/get-started-pyspark-jupyter-guide-tutorial-ae2fe84f594f
 
