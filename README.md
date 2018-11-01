@@ -284,6 +284,81 @@ recommend list  :
 
 ```
 
+```bash
+# run via docker
+# install wget via apt-get (ubuntu)
+
+docker run --rm -v $PWD/analysis:/url yennanliu/mac_ds_ml_env:v1 /bin/bash -c "git clone https://github.com/yennanliu/movie_recommendation.git ;  ls  ;  pwd ;  apt-get install wget ; bash download_dataset.sh ; cd movie_recommendation && python movie_recommend_benchmark.py"
+
+# output 
+
+Cloning into 'movie_recommendation'...
+bin
+boot
+dev
+ds
+etc
+home
+lib
+lib64
+media
+mnt
+movie_recommendation
+notebooks
+opt
+proc
+root
+run
+sbin
+srv
+sys
+tmp
+url
+usr
+var
+/
+Reading package lists...
+Building dependency tree...
+Reading state information...
+wget is already the newest version (1.18-5+deb9u2).
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+bash: download_dataset.sh: No such file or directory
+/opt/conda/lib/python3.7/site-packages/sklearn/cross_validation.py:41: DeprecationWarning: This module was deprecated in version 0.18 in favor of the model_selection module into which all the refactored classes and functions are moved. Also note that the interface of the new CV iterators are different from that of this module. This module will be removed in 0.20.
+  "This module will be removed in 0.20.", DeprecationWarning)
+   userId  std_rating
+0       1    0.887041
+1       2    0.901753
+2       3    0.741752
+....
+
+[100004 rows x 5 columns]
+        userId  movieId  rating   timestamp  total_view  avg_rating
+0            1       31     2.5  1260759144          42    3.178571
+1            7       31     3.0   851868750          42    3.178571
+2           31       31     4.0  1273541953          42    3.178571
+3           32       31     4.0   834828440          42    3.178571
+4           36       31     3.0   847057202          42    3.178571
+5           39       31     3.0   832525157          42    3.178571
+6           73       31     3.5  1255591860          42    3.178571
+7           88       31     3.0  1239755559          42    3.178571
+8           96       31     2.5  1223256331          42    3.178571
+...
+
+[100004 rows x 6 columns]
+recommend list  : 
+    movieId  total_view  avg_rating
+0       356       341.0    4.054252
+1       296       324.0    4.256173
+2       318       311.0    4.487138
+3       593       304.0    4.138158
+4       260       291.0    4.221649
+5       480       274.0    3.706204
+6      2571       259.0    4.183398
+7         1       247.0    3.872470
+....
+
+```
+
 ### REFERENCE
 - dev 
 
