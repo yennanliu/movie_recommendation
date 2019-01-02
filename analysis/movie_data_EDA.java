@@ -15,7 +15,7 @@ public class movie_data_EDA {
 
 	public static void main(String[] args) throws Exception {
 
-		Logger.getLogger("org").setLevel(Level.ERROR);
+        Logger.getLogger("org").setLevel(Level.ERROR);
         SparkSession session = SparkSession.builder().appName("MovieDataSurvey").master("local[1]").getOrCreate();
 
         DataFrameReader dataFrameReader = session.read();
