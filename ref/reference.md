@@ -4,6 +4,7 @@
 	- THEORY 
 		- https://nikhilwins.wordpress.com/2015/09/18/movie-recommendations-how-does-netflix-do-it-a-9-step-coding-intuitive-guide-into-collaborative-filtering/
 		- http://ihong-blog.logdown.com/posts/411133
+		- https://github.com/amitkaps/recommendation
 	- ML 
 		- https://github.com/jadianes/spark-movie-lens
 		- https://github.com/nchah/movielens-recommender
@@ -34,3 +35,10 @@
 	- https://towardsdatascience.com/how-to-build-a-simple-song-recommender-296fcbc8c85
 
 
+
+### TODO:
+1. Make evaluate function on all models 
+2. Go through all basics algorithms : https://github.com/amitkaps/recommendation
+3. Run NCF model via Tensforflow
+4. Tune Keras NCF model
+5. Tube spark ALS model 
