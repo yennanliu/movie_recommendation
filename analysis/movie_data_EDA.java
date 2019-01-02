@@ -21,12 +21,15 @@ public class movie_data_EDA {
         DataFrameReader dataFrameReader = session.read();
 
         Dataset<Row> responses = dataFrameReader.option("header","true").csv("../datasets/ml-latest-small/ratings.csv");
+        Dataset<Row> movies = dataFrameReader.option("header","true").csv("../datasets/ml-latest-small/movies.csv");
 
         System.out.println("=== Print out schema ===");
         responses.printSchema();
+        movies.printSchema();
 
         System.out.println("=== Print 20 records of responses table ===");
         responses.show(20);
+        movies.show(20);
 
         System.out.println("=== Print the movieId and rating columns of gender table ===");
         responses.select(col("movieId"),  col("rating")).show();
