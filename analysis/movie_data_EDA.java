@@ -16,6 +16,11 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import scala.Tuple2;
 
+import org.apache.commons.lang.StringUtils;
+
+// UDF 
+import commons.Utils;
+
 
 public class movie_data_EDA {
 
@@ -65,6 +70,17 @@ public class movie_data_EDA {
         JavaRDD<String> ratings = sc.textFile("../datasets/ml-latest-small/ratings.csv");
 
         System.out.println(ratings.take(30));
+
+        System.out.println("=== flat map get average rating by movie id  ===");
+
+        JavaRDD < String > movie_id_ratings = ratings.map(line -> {
+                            String[] splits = line.split(Utils.COMMA_DELIMITER);
+                            return StringUtils.join(new String[] {
+                            splits[1], splits[2] }, ",");
+                        }
+                );
+
+        System.out.println(movie_id_ratings.take(30));
 
 
 	}
