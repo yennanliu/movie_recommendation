@@ -104,6 +104,9 @@ public class movie_data_EDA {
                 new AvgCount(1, Double.parseDouble(line.split(",")[2]))));
 
 
+        System.out.println(movieratingPairRdd.take(30));
+
+
         JavaPairRDD<String, AvgCount> movieratingTotal = movieratingPairRdd.reduceByKey(
          (x, y) -> new AvgCount(x.getCount() + y.getCount(), x.getTotal() + y.getTotal()));
 
