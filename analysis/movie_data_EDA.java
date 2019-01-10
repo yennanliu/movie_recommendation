@@ -7,6 +7,15 @@ import static org.apache.spark.sql.functions.col;
 import static org.apache.spark.sql.functions.max;
 
 
+import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaPairRDD;
+import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.api.java.function.PairFunction;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import scala.Tuple2;
+
 
 public class movie_data_EDA {
 
@@ -48,17 +57,17 @@ public class movie_data_EDA {
         System.out.println("=== Print out casted schema ===");
         castedResponse.printSchema();
 
+        System.out.println("=== Spark flat map ===");
 
+        Logger.getLogger("org").setLevel(Level.ERROR);
+        SparkConf conf = new SparkConf().setAppName("movies").setMaster("local").set("spark.driver.allowMultipleContexts", "true");
+        JavaSparkContext sc = new JavaSparkContext(conf);
+        JavaRDD<String> ratings = sc.textFile("../datasets/ml-latest-small/ratings.csv");
 
-
-
-
+        System.out.println(ratings.take(30));
 
 
 	}
-
-
-
 
 
 
