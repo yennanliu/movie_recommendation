@@ -6,7 +6,6 @@ import static org.apache.spark.sql.functions.avg;
 import static org.apache.spark.sql.functions.col;
 import static org.apache.spark.sql.functions.max;
 
-
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
@@ -17,15 +16,17 @@ import org.apache.log4j.Logger;
 import scala.Tuple2;
 
 import org.apache.commons.lang.StringUtils;
+import java.util.Map;
 
 // UDF 
 import commons.Utils;
+import commons.AvgCount;
 
 
 public class movie_data_EDA {
 
 	private static final String  RATING_MIDPOINT = "rating";
-    private static final String TIMESTAMP_MIDPOINT = "timestamp";
+  private static final String TIMESTAMP_MIDPOINT = "timestamp";
 
 	public static void main(String[] args) throws Exception {
 
@@ -93,6 +94,30 @@ public class movie_data_EDA {
         JavaPairRDD<String, String> moviePairRDD = ratings.mapToPair(getMovieAndRatingPair());
 
         System.out.println(moviePairRDD.take(30));
+
+        System.out.println("=== RDD reduce by key ===");
+
+        JavaRDD<String> cleanedLines = ratings.filter(line -> !line.contains("movieId"));
+
+        JavaPairRDD<String, AvgCount> movieratingPairRdd = cleanedLines.mapToPair(
+        line -> new Tuple2<>(line.split(",")[1],
+                new AvgCount(1, Double.parseDouble(line.split(",")[2]))));
+
+
+        JavaPairRDD<String, AvgCount> movieratingTotal = movieratingPairRdd.reduceByKey(
+         (x, y) -> new AvgCount(x.getCount() + y.getCount(), x.getTotal() + y.getTotal()));
+
+        System.out.println("movieratingTotal: ");
+        for (Map.Entry<String, AvgCount> movieratingTotalPair : movieratingTotal.collectAsMap().entrySet()) {
+            System.out.println(movieratingTotalPair.getKey() + " : " + movieratingTotalPair.getValue());
+        }
+
+        JavaPairRDD<String, Double> movieratingAvg = movieratingTotal.mapValues(avgCount -> avgCount.getTotal()/avgCount.getCount());
+        
+        System.out.println("housePriceAvg: ");
+        for (Map.Entry<String, Double> movieratingAvgPair : movieratingAvg.collectAsMap().entrySet()) {
+            System.out.println(movieratingAvgPair.getKey() + " : " + movieratingAvgPair.getValue());
+        }
 
 
 
