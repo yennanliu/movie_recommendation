@@ -30,10 +30,13 @@ public class movie_data_EDA {
 	public static void main(String[] args) throws Exception {
 
         Logger.getLogger("org").setLevel(Level.ERROR);
+
+
+//-----------------------------------------------------------------------------------------------
+        System.out.println("******************* PART 1) SPARK SQL ******************* ");
         SparkSession session = SparkSession.builder().appName("MovieDataSurvey").master("local[1]").getOrCreate();
 
         DataFrameReader dataFrameReader = session.read();
-
         Dataset<Row> responses = dataFrameReader.option("header","true").csv("../datasets/ml-latest-small/ratings.csv");
         Dataset<Row> movies = dataFrameReader.option("header","true").csv("../datasets/ml-latest-small/movies.csv");
 
@@ -62,6 +65,9 @@ public class movie_data_EDA {
         System.out.println("=== Print out casted schema ===");
         castedResponse.printSchema();
 
+
+//-----------------------------------------------------------------------------------------------
+        System.out.println("******************* PART 2) SPARK RDD ******************* ");
         System.out.println("=== Spark flat map ===");
 
         Logger.getLogger("org").setLevel(Level.ERROR);
@@ -82,9 +88,23 @@ public class movie_data_EDA {
 
         System.out.println(movie_id_ratings.take(30));
 
+        System.out.println("=== pair RDD ===");
+
+        JavaPairRDD<String, String> moviePairRDD = ratings.mapToPair(getMovieAndRatingPair());
+
+        System.out.println(moviePairRDD.take(30));
+
+
 
 	}
 
-
+    private static PairFunction<String, String, String> getMovieAndRatingPair() {
+    return (PairFunction<String, String, String>) line -> new Tuple2<>(line.split(Utils.COMMA_DELIMITER)[1],
+                                                                           line.split(Utils.COMMA_DELIMITER)[2]);
+    }
 
 }
+
+
+
+
