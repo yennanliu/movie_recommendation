@@ -78,7 +78,7 @@ public class movie_data_EDA {
 
         System.out.println(ratings.take(30));
 
-        System.out.println("=== flat map get average rating by movie id  ===");
+        System.out.println("=== movie-rating RDD string ===");
 
         JavaRDD < String > movie_id_ratings = ratings.map(line -> {
                             String[] splits = line.split(Utils.COMMA_DELIMITER);
@@ -95,7 +95,7 @@ public class movie_data_EDA {
 
         System.out.println(moviePairRDD.take(30));
 
-        System.out.println("=== RDD reduce by key ===");
+        System.out.println("=== PairRDD reduce by key ===");
 
         JavaRDD<String> cleanedLines = ratings.filter(line -> !line.contains("movieId"));
 
