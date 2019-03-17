@@ -1,25 +1,21 @@
-
 # python 3 
-
 # ops
 import pandas as pd 
 from sklearn.model_selection import train_test_split
 import numpy as np
 import time
 from sklearn.externals import joblib
-
 # ml 
 from sklearn import preprocessing
 from sklearn import cluster, tree
 from sklearn.decomposition import PCA
 
-
+########################################################################
+# todo : filter outler / refine df_ratings_pivot_std (user-movie matrix)
+########################################################################
 
 # -------------------------------------
-# help function 
 # data preprocess 
-
-
 def get_data():
     route='datasets/ml-latest-small/'
     #df_movie = pd.read_csv(route +'movies.csv')
@@ -34,17 +30,14 @@ def data_preprocess(df):
     movie_grouped.sort_values(['view_count', 'movieId'], ascending = [0,1])
     return movie_grouped
 
-
 def get_train_test_data(df):
 	train_data, test_data = train_test_split(df, test_size = 0.20, random_state=0)
 	return train_data, test_data
-
 
 def fix_extreme_value(column):
     print (column.max())
     fixed_column = [x if x < 100 else column.mean()  for x in column] 
     return  fixed_column
-
 
 def get_user_movie_metrix(df):
 	cols = ['userId', 'movieId', 'rating']
@@ -56,7 +49,7 @@ def get_user_movie_metrix(df):
 	#df_ratings_pivot_ = df_ratings_pivot.fillna(0)
 	#df_ratings_pivot_.columns= list(set(df_.movieId))
 	#df_ratings_pivot_.reset_index()
-
+	
 	#### approach 2 : fill n/a data with mean  ####
 	for index, row in df_ratings_pivot.iterrows():
 		row_mean = df_ratings_pivot.iloc[index-1].mean()
@@ -64,10 +57,9 @@ def get_user_movie_metrix(df):
 		df_ratings_pivot.iloc[index-1].fillna(row_mean, inplace=True)
 
 	df_ratings_pivot_ = df_ratings_pivot.copy()  
-
-	#### approach 3 : work with "timestamp" ####
-	# dev 
 	
+	#### approach 3 : work with "timestamp" ####
+	# dev 	
 	X = df_ratings_pivot_.iloc[:,1:].fillna(0)
 	df_ratings_pivot_std = df_ratings_pivot_.copy()
 	# standardize 
@@ -76,7 +68,6 @@ def get_user_movie_metrix(df):
 	# pca : modify dimension from N  ->  2 
 	# http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html
 	# need to find tuned pca dimension below 
-
 	pca = PCA(n_components=2)
 	pca.fit(df_ratings_pivot_std)
 	ratings_pivot_std_pca =  pca.fit_transform(df_ratings_pivot_std)
@@ -87,18 +78,12 @@ def get_user_movie_metrix(df):
 	ratings_pivot_std_pca_ = ratings_pivot_std_pca_.set_index('userId')
 	ratings_pivot_std_pca_[0] = fix_extreme_value(ratings_pivot_std_pca_[0])
 	ratings_pivot_std_pca_[1] = fix_extreme_value(ratings_pivot_std_pca_[1])
-	print (ratings_pivot_std_pca_.max())
-	
+	print (ratings_pivot_std_pca_.max())	
 	#print (df_ratings_pivot_)
 	#print (df_ratings_pivot_std)
 	return df_ratings_pivot_, df_ratings_pivot_std, ratings_pivot_std_pca_
-
-
 # -------------------------------------
 # model 
-
-
-
 def KNN_model(user_movie_metrix,df_ratings_pivot):
 	# kmeans clustering 
 	# can tune the KNN super-parameter below 
@@ -114,13 +99,6 @@ def KNN_model(user_movie_metrix,df_ratings_pivot):
 	print (df_ratings_pivot.group.value_counts())
 	print ('*'*10)
 	return df_ratings_pivot
-
-
-
-
-
-# -------------------------------------
-
 
 if __name__ == '__main__':
 	df_ratings = get_data()
@@ -138,16 +116,3 @@ if __name__ == '__main__':
 	                          .mean(axis=0)\
 	                          .sort_values(ascending=False)\
 	                          .head(10))
-
-	"""
-
-	### todo : filter outler / refine df_ratings_pivot_std (user-movie matrix)
-	
-	"""
-                     
-
-
-
-
-
-
