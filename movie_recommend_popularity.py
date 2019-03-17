@@ -1,11 +1,14 @@
-# python 3 
+# python 3
+import numpy as np
+import pandas as pd 
+import time
+from sklearn.cross_validation import train_test_split
+from sklearn.externals import joblib 
 
 """
 # ref 
 # https://github.com/llSourcell/recommender_live/blob/master/Song%20Recommender_Python.ipynb
 # https://towardsdatascience.com/how-to-build-a-simple-song-recommender-296fcbc8c85
-
-
 
 * Recommend model based on popular movie 
 * Note that the output of this model is SAME TO ALL USERID 
@@ -40,21 +43,8 @@ userId :  16
 529       16      608    192  10.0
 ---------
 
-
-
-
 """
-
-import numpy as np
-import pandas as pd 
-import time
-from sklearn.cross_validation import train_test_split
-from sklearn.externals import joblib
-
-
 # -------------------------------------
-
-# help function 
 # data preprocess 
 def get_data():
     route='datasets/ml-latest-small/'
@@ -70,18 +60,11 @@ def data_preprocess(df):
     movie_grouped.sort_values(['view_count', 'movieId'], ascending = [0,1])
     return movie_grouped
 
-
 def get_train_test_data(df):
 	train_data, test_data = train_test_split(df, test_size = 0.20, random_state=0)
 	return train_data, test_data
-
-
-
 # -------------------------------------
-
-
 # ML 
-
 class popularity_recommender():
     def __init__(self):
         self.train_data = None
@@ -127,10 +110,6 @@ class popularity_recommender():
         print ('---------')
         return user_recommendations
 
-
-# -------------------------------------
-
-
 if __name__ == '__main__':
     df_ratings = get_data()
     users = df_ratings.userId.unique()
@@ -144,11 +123,3 @@ if __name__ == '__main__':
     # recommend for user 16 
     user_id = users[15]
     model.recommend(user_id)
-
-
-
-
-
-
-
-
