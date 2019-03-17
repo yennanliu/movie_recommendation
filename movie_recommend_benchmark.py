@@ -1,19 +1,11 @@
-
 # python 3 
-
 import pandas as pd 
 from sklearn.cross_validation import train_test_split
 import numpy as np
 import time
 from sklearn.externals import joblib
 
-
-
-# -------------------------------------
-# help function 
 # data preprocess 
-
-
 def get_data():
     route='datasets/ml-latest-small/'
     #df_movie = pd.read_csv(route +'movies.csv')
@@ -28,13 +20,9 @@ def data_preprocess(df):
     movie_grouped.sort_values(['view_count', 'movieId'], ascending = [0,1])
     return movie_grouped
 
-
 def get_train_test_data(df):
 	train_data, test_data = train_test_split(df, test_size = 0.20, random_state=0)
 	return train_data, test_data
-
-
-
 
 def get_benchmark_feature(df):
 	# total view 
@@ -47,8 +35,6 @@ def get_benchmark_feature(df):
 	df_ratings_viewcount = pd.merge(df_ratings, view_count_total, on='movieId')
 	df_ratings_viewcount = pd.merge(df_ratings_viewcount, df_avg_rating, on='movieId')
 	return df_ratings_viewcount
-
-
 
 def get_rating_deviation(df):
     df_ = df.copy()
@@ -65,11 +51,8 @@ def get_rating_deviation(df):
     # merge back 
     df_ = pd.merge(df_, df_std_rating, on='userId')
     return df_
- 
-# -------------------------------------
+
 # model 
-
-
 def recommend(df_feature):
 	# get movie with top view counts and avg_rating 
 	recommend_list = df_ratings_viewcount.groupby('movieId')\
@@ -82,14 +65,8 @@ def recommend(df_feature):
 	print (recommend_list_)
 	return recommend_list_
 
-
 def recommend_by_user(df_feature):
 	pass 
-
-
-
-# -------------------------------------
-
 
 if __name__ == '__main__':
 	df_ratings = get_data()
@@ -104,8 +81,3 @@ if __name__ == '__main__':
 	#movie_grouped = data_preprocess(df_ratings)
 	#print (movie_grouped)
 	#train_data, test_data = get_train_test_data(df_ratings)
-
-
-
-
-
