@@ -41,8 +41,6 @@ from keras.layers.core import Dense, Lambda, Activation
 from keras.layers import Embedding, Input, Dropout, Dense, merge, Reshape, Merge, Flatten
 from keras.optimizers import Adam
 from keras.regularizers import l2
-
-
 # -------------------------------------------------------------------------
 # help function 
 
@@ -52,11 +50,9 @@ def get_data():
     df_ratings = pd.read_csv(route +'ratings.csv')
     return df_ratings
 
-
 # Function to predict the ratings given User ID and Movie ID
 def predict_rating(userId, movieId,model_):
     return model_.rate(userId - 1, movieId - 1)
-
 
 def get_train_instances(train, num_negatives):
     playlist_input, item_input, labels = [],[],[]
@@ -75,12 +71,8 @@ def get_train_instances(train, num_negatives):
             item_input.append(j)
             labels.append(0)
     return playlist_input, item_input, labels
-
-
 # -------------------------------------------------------------------------
 # model 
-
-
 class NCF_model_V1(Sequential):
 
     # The constructor for the class
@@ -105,8 +97,6 @@ class NCF_model_V1(Sequential):
     # The rate function to predict user's rating of unrated items
     def rate(self, userId, movieId):
         return self.predict([np.array([userId]), np.array([movieId])])[0][0]
-
-
 
 class NCF_model_V2(Sequential):
 
@@ -134,21 +124,14 @@ class NCF_model_V2(Sequential):
     def rate(self, userId, movieId):
         return self.predict([np.array([userId]), np.array([movieId])])[0][0]
 
-
-
-
 class NCF_model_V3(Sequential):
 
     def __init__(self, n_users, m_items, k_factors, **kwargs):
-        #initializers.normal(shape, scale=0.01, name=name)
-        # U is the embedding layer that creates an User by latent factors matrix.
-        # If the intput is a user_id, U returns the latent factor vector for that user.
+        # user embedding layer
         U = Sequential()
         U.add(Embedding(n_users, k_factors, input_length=1))
         U.add(Reshape((k_factors,)))
-
-        # M is the embedding layer that creates a Movie by latent factors matrix.
-        # If the input is a movie_id, M returns the latent factor vector for that movie.
+        # movie embedding layer
         M = Sequential()
         M.add(Embedding(m_items, k_factors, input_length=1))
         M.add(Reshape((k_factors,)))
@@ -158,17 +141,19 @@ class NCF_model_V3(Sequential):
         # The Merge layer takes the dot product of user and movie latent factor vectors to return the corresponding rating.
         self.add(Merge([U, M], mode='dot', dot_axes=1))
         self.add(Dense(1, activation='sigmoid',init='lecun_uniform'))
+        # add hidden layer 
+        #self.add(Dense(1 ))
         # add experiment layers 
-        self.add(Dense(1, activation='relu',init='lecun_uniform'))
+        #self.add(Dense(1, activation='relu',init='lecun_uniform'))
+        #self.add(Dense(1, activation='tanh',init='lecun_uniform'))
         self.add(Dense(1, activation='sigmoid',init='lecun_uniform'))
+        #self.add(Dense(1, activation='relu',init='lecun_uniform'))
         # dropout 
         self.add(Dropout(0.2))
 
 
     def rate(self, userId, movieId):
         return self.predict([np.array([userId]), np.array([movieId])])[0][0]
-
-
 
 class NCF_model_V4():
 
@@ -209,7 +194,6 @@ class NCF_model_V4():
         model = Model(input=[user_input, item_input], output=prediction)
         return model
 
-
 # -------------------------------------------------------------------------
 # execute the processes 
 
@@ -224,9 +208,9 @@ def run():
     regs = [0,0]
     max_userid = max(df_ratings.userId)
     max_movieid  =  max(df_ratings.movieId)
-    Users = df_ratings.head(5000).userId.values
-    Movies = df_ratings.head(5000).movieId.values
-    Ratings = df_ratings.head(5000).rating.values
+    Users = df_ratings.head(10000).userId.values
+    Movies = df_ratings.head(10000).movieId.values
+    Ratings = df_ratings.head(10000).rating.values
 
     # --------------  MODELING  --------------
 
@@ -256,10 +240,6 @@ def run():
         print(hist.history)
     # ------------------------- for MODEL V4   -------------------------
     """
-
-
-
-
     # Compile the model using MSE as the loss function and the AdaMax learning algorithm
     model.compile(loss='mse', optimizer='adamax')
     # print model architecture 
@@ -268,7 +248,7 @@ def run():
     # Save the model weights each time the validation loss has improved
     callbacks = [EarlyStopping('val_loss', patience=2), ModelCheckpoint('weights.h5', save_best_only=True)]
     # --------------  Use 30 epochs, 90% training data, 10% validation data   --------------
-    history = model.fit([Users, Movies], Ratings, nb_epoch=5, validation_split=.1, verbose=2, callbacks=callbacks)
+    history = model.fit([Users, Movies], Ratings, nb_epoch=30, validation_split=.1, verbose=2, callbacks=callbacks)
     history.history
     # Show the best validation RMSE
     min_val_loss, idx = min((val, idx) for (idx, val) in enumerate(history.history['val_loss']))
@@ -290,21 +270,5 @@ def run():
     #                                            suffixes=['_u', '_m']).head(20)
     print (user_ratings.sort_values(by='rating', ascending=False))
 
-
-
-
-
-
-
-
-
-# -------------------------------------------------------------------------
-
 if __name__ == '__main__':
     run()
-
-
-
-
-
-
