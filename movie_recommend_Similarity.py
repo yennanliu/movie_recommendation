@@ -1,19 +1,11 @@
-
 # python3 
-
 import pandas as pd 
 from sklearn.cross_validation import train_test_split
 import numpy as np
 import time
 from sklearn.externals import joblib
-
-
 # -------------------------------------
-
-# help function 
 # data preprocess 
-
-
 def get_data():
     route='datasets/ml-latest-small/'
     #df_movie = pd.read_csv(route +'movies.csv')
@@ -28,19 +20,11 @@ def data_preprocess(df):
     movie_grouped.sort_values(['view_count', 'movieId'], ascending = [0,1])
     return movie_grouped
 
-
-
 def get_train_test_data(df):
 	train_data, test_data = train_test_split(df, test_size = 0.20, random_state=0)
 	return train_data, test_data
 
-
-
 # ML
-
-
-
-
 #Class for Item similarity based Recommender System model
 class item_similarity_recommender_py():
     def __init__(self):
@@ -56,24 +40,19 @@ class item_similarity_recommender_py():
     def get_user_items(self, user):
         user_data = self.train_data[self.train_data[self.userId] == user]
         user_items = list(user_data[self.movieId].unique())
-        
         return user_items
-        
+
     #Get unique users for a given item (song)
     def get_item_users(self, item):
         item_data = self.train_data[self.train_data[self.movieId] == item]
-        item_users = set(item_data[self.userId].unique())
-            
+        item_users = set(item_data[self.userId].unique())          
         return item_users
         
     #Get unique items (songs) in the training data
     def get_all_items_train_data(self):
-        all_items = list(self.train_data[self.movieId].unique())
-            
+        all_items = list(self.train_data[self.movieId].unique())          
         return all_items
-    
 
-        
     #Construct cooccurence matrix
     def construct_cooccurence_matrix(self, user_movies, all_movies):
             
@@ -114,9 +93,7 @@ class item_similarity_recommender_py():
                     
                     cooccurence_matrix[j,i] = float(len(users_intersection))/float(len(users_union))
                 else:
-                    cooccurence_matrix[j,i] = 0
-                    
-        
+                    cooccurence_matrix[j,i] = 0      
         return cooccurence_matrix
     
     
@@ -151,14 +128,11 @@ class item_similarity_recommender_py():
             return -1
         else:
             return df
-    
-
     #Create the item similarity based recommender system model
     def create(self, train_data, userId, movieId):
         self.train_data = train_data
         self.userId = userId
         self.movieId = movieId
-
     #Use the item similarity based recommender system model to
     #make recommendations
     def recommend(self, user):
@@ -219,12 +193,6 @@ class item_similarity_recommender_py():
         print (df_recommendations)
         return df_recommendations
 
-
-
-
-# -------------------------------------
-
-
 if __name__ == '__main__':
 	# data preprocess
 	df_ratings = get_data()
@@ -241,17 +209,11 @@ if __name__ == '__main__':
 	print("------------------------------------------------------------------------------------")
 	print("Training data movies for the user userid: %s:" % user_id)
 	print("------------------------------------------------------------------------------------")
-
 	for user_item in user_items:
 	    print(user_item)
-
 	print("----------------------------------------------------------------------")
 	print("Recommendation process going on:")
 	print("----------------------------------------------------------------------")
 
 	#Recommend songs for the user using personalized model
 	is_model.recommend(user_id)
-
-
-
-
