@@ -1,5 +1,4 @@
 from __future__ import print_function
-# python 3 
 # ML 
 from pyspark import SparkContext
 from pyspark.mllib.recommendation import ALS
@@ -13,18 +12,9 @@ import os
 import pandas as pd 
 import numpy as np 
 
-
-# import SparkContext
-from pyspark import SparkContext
 sc =SparkContext()
-
-
-
 # help functions 
-
-
 # -------------------------------------
-
 # user input new rating logics 
 def get_data_preview():
 	datasets_path = '/Users/yennanliu/movie_recommendation/datasets/'
@@ -39,8 +29,6 @@ def get_data_preview():
 	print (" ----------------------- ")
 	time.sleep(5)
 
-
-
 def get_movie_name_from_id(movie_title_RDD,id):
 	movie_list = dict(movie_title_RDD.collect())
 	try:
@@ -53,13 +41,11 @@ def get_movie_name_from_id(movie_title_RDD,id):
 		print ('insert movie_id :' , id)
 		print ('movie_id not exist')
 
-
 def fetch_random_movie_id(movie_title_RDD):
     movie_count = int(movie_title_RDD.count())
     random_movie_id = np.random.randint(1,movie_count,5)
     print ('random movid id : ', random_movie_id)
     return random_movie_id
-
   
 def collect_random_movie_rating(random_movie_id):
 	print ('-------------------')
@@ -74,13 +60,8 @@ def collect_random_movie_rating(random_movie_id):
 	#print (list(zip(movie_name,output)))
 	return output
 
-
-
 # -------------------------------------
-
-
 # data preprocess 
-
 def get_data(full_dataset=False):
 
 	datasets_path = '/Users/yennanliu/movie_recommendation/datasets/'
@@ -125,13 +106,8 @@ def get_data(full_dataset=False):
 		    .map(lambda line: line.split(",")).map(lambda tokens: (int(tokens[0]),tokens[1],tokens[2])).cache()
 		complete_movies_titles = complete_movies_data.map(lambda x: (int(x[0]),x[1]))
 		return complete_ratings_data, complete_movies_data, complete_movies_titles
-
- 
 # -------------------------------------
-
-
 # ops 
-
 def train_test_split(dataset):
 	# split data into train (60%), validate (20%), and test (20%)
 	training_RDD, validation_RDD, test_RDD = dataset.randomSplit([6, 2, 2])
@@ -139,12 +115,9 @@ def train_test_split(dataset):
 	test_for_predict_RDD = test_RDD.map(lambda x: (x[0], x[1]))
 	return training_RDD, validation_RDD, test_RDD, validation_for_predict_RDD, test_for_predict_RDD
 
-
-
 def get_counts_and_averages(ID_and_ratings_tuple):
     nratings = len(ID_and_ratings_tuple[1])
     return ID_and_ratings_tuple[0], (nratings, float(sum(x for x in ID_and_ratings_tuple[1]))/nratings)
-
 
 def get_feature(movie_RDD):
     # get avg / count / features
@@ -153,8 +126,6 @@ def get_feature(movie_RDD):
     small_movie_rating_counts_RDD = small_movie_ID_avg_ratings_RDD.map(lambda x: (x[0], x[1][0]))
     print (small_movie_rating_counts_RDD)
     return small_movie_rating_counts_RDD 
-
-
 
 def get_new_input_data():
 	new_user_ID = 0
@@ -176,8 +147,6 @@ def get_new_input_data():
 	print ('New user ratings: %s' % new_user_ratings_RDD.take(10))
 	return new_user_ratings_RDD, new_user_ratings,new_user_ID
 
-
-
 def get_user_input_data(userid,movieid_array,rating_array):
 	new_user_ID = userid
 	new_user_ID_array=[new_user_ID for x in range(len(movieid_array))]
@@ -186,15 +155,8 @@ def get_user_input_data(userid,movieid_array,rating_array):
 	new_user_ratings_RDD = sc.parallelize(new_user_ratings)
 	print ('New user ratings: %s' % new_user_ratings_RDD.take(10))
 	return new_user_ratings_RDD, new_user_ratings,new_user_ID
-
-
-
 # -------------------------------------
-
-
 # ML 
-
-
 def ALS_model(training_RDD,validation_RDD,validation_for_predict_RDD):
 	# ------------- 
 	# super parameters
@@ -228,7 +190,6 @@ def ALS_model(training_RDD,validation_RDD,validation_for_predict_RDD):
 
 	return model, predictions, rates_and_preds, min_error,best_rank, parameter
 
-
 def ALS_model_predict(model,test_for_predict_RDD,test_RDD):
 	#model = ALS.train(training_RDD, best_rank, seed=parameter['seed'], iterations=parameter['iterations'],lambda_=parameter['regularization_parameter'])
 	predictions = model.predictAll(test_for_predict_RDD).map(lambda r: ((r[0], r[1]), r[2]))
@@ -236,12 +197,7 @@ def ALS_model_predict(model,test_for_predict_RDD,test_RDD):
 	error = math.sqrt(rates_and_preds.map(lambda r: (r[1][0] - r[1][1])**2).mean())
 	print ('For testing data the RMSE is %s' % (error))
 
-
-
-
 # -------------------------------------
-
-
 if __name__ == '__main__':
 	"""
 	PROCESS : 
@@ -250,7 +206,6 @@ if __name__ == '__main__':
 	3) get "new user input" data (new user comment )
 	4) merge original data  with 2), 3) new data  as modifed data 
 	5) re-train modifed data with  best parameters 
-
 	"""
 	# dataset preview 
 	get_data_preview()
@@ -278,8 +233,6 @@ if __name__ == '__main__':
 	#r_movie_id = fetch_random_movie_id(small_movies_titles)
 	#r_movie_raring = collect_random_movie_rating(r_movie_id)
 	#new_user_ratings_RDD, new_user_ratings,new_user_ID = get_user_input_data(9997,r_movie_id,r_movie_raring)
-
-
 	small_ratings_data_with_new_ratings_RDD = small_ratings_data.union(new_user_ratings_RDD)
 	print (small_ratings_data_with_new_ratings_RDD.take(10))
 	# ------------ re-train with merged and new input data ------------ #
@@ -316,10 +269,3 @@ if __name__ == '__main__':
 	print ('=======================')
 	#complete_ratings_data, complete_movies_data,complete_movies_titles = get_data(full_dataset=True)
 	#print(complete_ratings_data.take(3))
-
-
-
-
-
-
-
