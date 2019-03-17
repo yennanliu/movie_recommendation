@@ -360,7 +360,7 @@ recommend list  :
 ```
 
 ### REFERENCE
-- dev 
+- [ref.md](https://github.com/yennanliu/movie_recommendation/blob/master/ref/reference.md) 
 
 
 
