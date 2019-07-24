@@ -40,6 +40,8 @@ yennanliu@yennanliude-MacBook-Pro:~/movie_recommendation$  tree --si
 
 ### THEORY 
 
+<details>
+<summary>THEORY</summary>
 
 - Collaborative Filtering (CF)
 
@@ -116,12 +118,12 @@ data EDA -> feature engineering -> benchmark model -> popularity model -> CF mod
 (offline + online training)
 
 ``` 
-
-
-
+</details>
 
 ### QUICK START 
 
+<details>
+<summary>Quick-Start</summary>
 
 ```bash 
 # get the repo 
@@ -358,6 +360,7 @@ recommend list  :
 ....
 
 ```
+</details>
 
 ### REFERENCE
 - [ref.md](https://github.com/yennanliu/movie_recommendation/blob/master/ref/reference.md) 
