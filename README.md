@@ -1,4 +1,3 @@
-
 # movie_recommendation
 
 
@@ -15,27 +14,22 @@ Build various recommend systems via user rating, movie data, and other meta data
 Please check the theory intro, step-by-step notebook, and quick start start below.
 
 
-
 ### FILE STRUCTURE 
 ```
-yennanliu@yennanliude-MacBook-Pro:~/movie_recommendation$  tree --si
-
-├── [5.2k]  README.md
-├── [ 384]  archive
-├── [ 160]  datasets                         : main dataset (please download ml-latest via download_dataset.sh script )  
-├── [ 580]  download_dataset.sh              : script download /dataset/ml-latest data 
-├── [1.6k]  install_pyspark.sh               : script install pyspark 
-├── [3.8k]  movie_recommend_KNN.py           : movie recommend via KNN (user similarity)
-├── [ 152]  movie_recommend_NCF.py           : movie recommend via NN+CF (dev)
-├── [9.9k]  movie_recommend_Similarity.py    : movie recommend via user similarity
-├── [3.2k]  movie_recommend_benchmark.py     : movie recommend benchmark model 
-├── [4.5k]  movie_recommend_popularity.py    : movie recommend via movie popularity
-├── [ 37k]  movie_recommend_spark_CF.ipynb   : movie_recommend_spark_CF.py 's step by step nb demo 
-├── [ 13k]  movie_recommend_spark_CF.py      : movie recommend via CF (pyspark ML)  
-
+├── [ 12k]  README.md
+├── [ 224]  analysis
+├── [ 160]  datasets                           : main training dataset
+├── [ 352]  model
+│   ├── [5.2k]  movie_recommend_ALS.java       : movie recommend via java spark ALS model 
+│   ├── [4.7k]  movie_recommend_KNN.py         : movie recommend via KNN (user similarity)
+│   ├── [ 11k]  movie_recommend_NCF.py         : movie recommend via NN+CF (dev)
+│   ├── [9.7k]  movie_recommend_Similarity.py  : movie recommend via user similarity
+│   ├── [3.0k]  movie_recommend_benchmark.py   : movie recommend benchmark model 
+│   ├── [4.4k]  movie_recommend_popularity.py  : movie recommend via movie popularity
+│   └── [ 13k]  movie_recommend_spark_CF.py    : movie recommend via CF (pyspark ML)  
+├── [ 320]  notebook                           : step by step ML code notebook demo 
 
 ```
-
 
 
 ### THEORY 
@@ -364,6 +358,4 @@ recommend list  :
 
 ### REFERENCE
 - [ref.md](https://github.com/yennanliu/movie_recommendation/blob/master/ref/reference.md) 
-
-
 
