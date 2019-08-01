@@ -1,4 +1,7 @@
 #!/bin/sh
+#################################################################
+# SCRIPT LAUNCH REPO RUNNING ENV  
+#################################################################
 
 # launch spark env 
 source activate pyspark_
@@ -8,4 +11,3 @@ export PATH=$SPARK_HOME/bin:$PATH
 # ready for running spark script via command line  
 # spark-submit movie_recommend_spark.py 
 #spark-submit  movie_recommend_spark.py
- 

@@ -1,4 +1,7 @@
 #!/bin/sh
+#################################################################
+# SCRIPT DOWNLOAD WHOLE TO-TRAIN MOVIE DATA
+#################################################################
 
 function ml_latest_download() {
 
@@ -18,7 +21,5 @@ else
 	mv ml-latest $DESTINATION
 fi 
 }
-
-
 
 ml_latest_download
